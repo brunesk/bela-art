@@ -258,6 +258,10 @@
         <input type="text" id="f-mat-un" placeholder="barras / m² / kg" class="w-full px-4 py-3 border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500">
       </div>
     </div>
+    <div>
+      <label class="block text-sm font-semibold text-slate-700 mb-1.5">Cor</label>
+      <input type="text" id="f-mat-cor" placeholder="ex: Branco, Bronze, Natural" class="w-full px-4 py-3 border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500">
+    </div>
     <div class="flex gap-3 pt-1">
       <button type="button" onclick="closeSheet()" class="flex-1 py-3.5 border border-slate-200 rounded-xl font-semibold text-slate-600 hover:bg-slate-50">Cancelar</button>
       <button type="submit" class="flex-1 py-3.5 bg-blue-600 rounded-xl font-semibold text-white hover:bg-blue-700 shadow-sm">Adicionar</button>
@@ -458,6 +462,8 @@ function badge(status) {
 function openSheet(id) { show('backdrop'); show(id); }
 function closeSheet() {
   ['sheet-obra','sheet-cliente','sheet-material','sheet-pagamento','sheet-cli-det','sheet-confirm'].forEach(hide);
+  const dyn = document.getElementById('sheet-status-dyn');
+  if (dyn) dyn.classList.add('hidden');
   hide('backdrop');
 }
 
@@ -475,8 +481,9 @@ function renderObras() {
     const recebido = pags.reduce((s,p) => s+p.valor, 0);
     const saldo = (obra.valorTotal||0) - recebido;
     const pct = obra.valorTotal > 0 ? Math.min(100, Math.round(recebido/obra.valorTotal*100)) : 0;
+    const borderCls = {'em-andamento':'border-l-amber-400','concluida':'border-l-blue-400','paga':'border-l-green-500'};
     return `
-    <div class="bg-white rounded-2xl p-4 shadow-sm border border-slate-100 cursor-pointer active:scale-[0.98] transition-transform" onclick="goTo('obra-det','${obra.id}')">
+    <div class="bg-white rounded-2xl p-4 shadow-sm border border-slate-100 border-l-4 ${borderCls[obra.status]||'border-l-slate-300'} cursor-pointer active:scale-[0.98] transition-transform" onclick="goTo('obra-det','${obra.id}')">
       <div class="flex items-start justify-between mb-2.5">
         <div class="flex-1 min-w-0 mr-3">
           <p class="font-bold text-slate-800 leading-tight">${obra.descricao}</p>
@@ -565,7 +572,7 @@ function renderObraDet(obraId) {
             </button>
             <div class="flex-1 min-w-0">
               <p class="text-sm font-medium text-slate-700 ${m.comprado?'line-through':''}">${m.descricao}</p>
-              ${m.qtd?`<p class="text-xs text-slate-400">${m.qtd} ${m.un||''}</p>`:''}
+              <p class="text-xs text-slate-400">${[m.qtd?(m.qtd+(m.un?' '+m.un:'')):null, m.cor?'Cor: '+m.cor:null].filter(Boolean).join(' · ')||''}</p>
             </div>
             <button onclick="delMat('${m.id}')" class="text-slate-200 hover:text-red-400 transition-colors flex-shrink-0">
               <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
@@ -719,12 +726,15 @@ function renderReceber() {
   empty.classList.add('hidden');
   list.innerHTML = fil.map(p => {
     const late = !p.dataPago && isLate(p.venc);
+    const obraRef = p.obraId ? obras.find(o => o.id === p.obraId) : null;
+    const nomeObra = obraRef?.descricao || p.obraDesc || 'Sem obra';
+    const nomeCli  = obraRef?.clienteNome || p.cliNome || 'Sem cliente';
     return `
-    <div class="bg-white rounded-2xl p-4 shadow-sm border border-slate-100">
+    <div class="bg-white rounded-2xl p-4 shadow-sm border border-slate-100 ${late?'border-l-4 border-l-red-400':''}">
       <div class="flex items-start justify-between mb-2">
         <div class="flex-1 min-w-0 mr-3">
           <p class="font-bold text-slate-800">${money(p.valor)}</p>
-          <p class="text-sm text-slate-500 truncate">${p.obraDesc||'—'} · ${p.cliNome||'—'}</p>
+          <p class="text-sm text-slate-500 truncate">${nomeObra} · ${nomeCli}</p>
           ${p.obs?`<p class="text-xs text-slate-400 mt-0.5">${p.obs}</p>`:''}
         </div>
         <div class="text-right flex-shrink-0">
@@ -760,7 +770,8 @@ function renderCompras() {
   const byObra = {};
   pend.forEach(m => {
     const k = m.obraId||'avulso';
-    if (!byObra[k]) byObra[k] = { desc: m.obraDesc||'Avulso', items: [] };
+    const obraRef = m.obraId ? obras.find(o => o.id === m.obraId) : null;
+    if (!byObra[k]) byObra[k] = { desc: obraRef?.descricao || m.obraDesc || 'Avulso', items: [] };
     byObra[k].items.push(m);
   });
   list.innerHTML = Object.entries(byObra).map(([obraId,g]) => `
@@ -775,7 +786,7 @@ function renderCompras() {
           <button onclick="toggleMat('${m.id}',false)" class="w-6 h-6 rounded-full border-2 border-slate-300 flex-shrink-0 hover:border-green-400 hover:bg-green-50 transition-colors"></button>
           <div class="flex-1 min-w-0">
             <p class="text-sm font-medium text-slate-700">${m.descricao}</p>
-            ${m.qtd?`<p class="text-xs text-slate-400">${m.qtd} ${m.un||''}</p>`:''}
+            <p class="text-xs text-slate-400">${[m.qtd?(m.qtd+(m.un?' '+m.un:'')):null, m.cor?'Cor: '+m.cor:null].filter(Boolean).join(' · ')||'—'}</p>
           </div>
         </div>`).join('')}
       </div>
@@ -884,6 +895,7 @@ document.getElementById('form-material').addEventListener('submit', async e => {
     descricao: document.getElementById('f-mat-desc').value.trim(),
     qtd: document.getElementById('f-mat-qtd').value.trim()||null,
     un:  document.getElementById('f-mat-un').value.trim()||null,
+    cor: document.getElementById('f-mat-cor').value.trim()||null,
     comprado: false,
     ts: firebase.firestore.FieldValue.serverTimestamp()
   };
