@@ -339,6 +339,9 @@ firebase.initializeApp(FB_CONFIG);
 const auth = firebase.auth();
 const db   = firebase.firestore();
 
+const EMAILS_AUTORIZADOS = ['brunoferrack@gmail.com', 'contatojoco@gmail.com'];
+const CONTA_COMPARTILHADA = 'bela-art';
+
 let uid = null;
 const col = (path) => db.collection(`users/${uid}/${path}`);
 
@@ -357,7 +360,12 @@ document.getElementById('btn-login').onclick = () => {
 
 auth.onAuthStateChanged(user => {
   if (user) {
-    uid = user.uid;
+    if (!EMAILS_AUTORIZADOS.includes(user.email)) {
+      auth.signOut();
+      alert('Acesso não autorizado. Entre em contato com o administrador.');
+      return;
+    }
+    uid = CONTA_COMPARTILHADA;
     show('screen-app');
     hide('screen-login');
     startListeners();
