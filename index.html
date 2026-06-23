@@ -1010,6 +1010,28 @@ function calcularCorte() {
   var resultado = tip.calcular(L, A);
   var el = document.getElementById('corte-resultado');
   var html = '';
+  var todosMap = {};
+  resultado.grupos.forEach(function(grupo) {
+    grupo.perfis.forEach(function(p) {
+      var key = p.codigo + '||' + p.medida;
+      if (todosMap[key]) { todosMap[key].qtd += p.qtd; }
+      else { todosMap[key] = { codigo: p.codigo, nome: p.nome, medida: p.medida, qtd: p.qtd }; }
+    });
+  });
+  var todosArr = Object.values(todosMap).sort(function(a,b){
+    return a.codigo < b.codigo ? -1 : a.codigo > b.codigo ? 1 : b.medida - a.medida;
+  });
+  html += '<div class="bg-white rounded-2xl shadow-sm border-2 border-green-500 overflow-hidden mb-1">';
+  html += '<div class="bg-green-600 px-4 py-2.5"><p class="font-bold text-white text-sm">Todos os Perfis</p></div>';
+  todosArr.forEach(function(p) {
+    var m = p.medida % 1 === 0 ? p.medida : p.medida.toFixed(1);
+    html += '<div class="flex items-center gap-3 px-4 py-3 border-b border-slate-50">';
+    html += '<img src="Perfis/' + p.codigo + '.png" alt="" class="w-14 h-10 object-contain flex-shrink-0 bg-slate-50 rounded-lg p-1 cursor-pointer" onclick="abrirImgPerfil(this.src)" onerror="this.remove()">';
+    html += '<div class="flex-1 min-w-0"><p class="text-xs font-bold text-blue-600">' + p.codigo + '</p><p class="text-sm text-slate-700 leading-tight">' + p.nome + '</p></div>';
+    html += '<div class="text-right flex-shrink-0"><p class="text-xl font-black text-slate-800">' + m + '<span class="text-xs font-normal text-slate-400 ml-0.5">mm</span></p><p class="text-xs font-semibold text-green-600">' + p.qtd + ' ' + (p.qtd > 1 ? 'pecas' : 'peca') + '</p></div>';
+    html += '</div>';
+  });
+  html += '</div>';
   resultado.grupos.forEach(function(grupo) {
     html += '<div class="bg-white rounded-2xl shadow-sm border border-slate-100 overflow-hidden">';
     html += '<div class="bg-blue-50 px-4 py-2.5 border-b border-blue-100"><p class="font-bold text-blue-700 text-sm">' + grupo.nome + '</p></div>';
