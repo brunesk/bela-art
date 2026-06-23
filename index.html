@@ -20,6 +20,7 @@
   </style>
 </head>
 <body class="bg-slate-100">
+
 <div id="screen-login" class="min-h-screen flex items-center justify-center bg-gradient-to-br from-blue-900 via-blue-800 to-slate-900 px-6">
   <div class="text-center w-full max-w-sm">
     <div class="w-24 h-24 bg-white/10 backdrop-blur rounded-3xl mx-auto mb-6 flex items-center justify-center border border-white/20">
@@ -39,6 +40,7 @@
     <p class="text-blue-400/70 text-xs mt-5">Seus dados ficam seguros na nuvem</p>
   </div>
 </div>
+
 <div id="screen-app" class="hidden flex flex-col h-screen max-w-lg mx-auto">
   <header class="bg-white border-b border-slate-200 px-4 py-3 flex items-center gap-3 z-10 shadow-sm flex-shrink-0">
     <button id="btn-back" class="hidden w-9 h-9 rounded-xl flex items-center justify-center hover:bg-slate-100 active:bg-slate-200 transition-colors flex-shrink-0">
@@ -61,7 +63,7 @@
           <svg class="w-8 h-8 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-2 10v-5a1 1 0 00-1-1h-2a1 1 0 00-1 1v5m4 0H9"/></svg>
         </div>
         <p class="font-semibold text-slate-500">Nenhuma obra</p>
-        <p class="text-sm text-slate-400 mt-1">Toque em + Novo para comecar</p>
+        <p class="text-sm text-slate-400 mt-1">Toque em + Nova para comecar</p>
       </div>
     </section>
     <section id="page-obra-det" class="hidden p-4"><div id="obra-det-content"></div></section>
@@ -84,7 +86,7 @@
         <p class="text-blue-300 text-xs font-semibold uppercase tracking-wider mb-1">Total a receber</p>
         <p id="total-receber" class="text-4xl font-black">R$ 0,00</p>
         <div class="flex gap-5 mt-4 pt-4 border-t border-blue-600/50">
-          <div><p class="text-blue-300 text-xs mb-0.5">Pendentes</p><p id="count-receber" class="font-bold text-sm">0 parcelas</p></div>
+          <div><p class="text-blue-300 text-xs mb-0.5">Pendentes</p><p id="count-receber" class="font-bold text-sm">0 obras</p></div>
           <div><p class="text-blue-300 text-xs mb-0.5">Atrasados</p><p id="atrasado-receber" class="font-bold text-sm text-red-300">R$ 0,00</p></div>
         </div>
       </div>
@@ -129,15 +131,18 @@
     </div>
   </nav>
 </div>
+
+<!-- BACKDROP -->
 <div id="backdrop" class="hidden fixed inset-0 bg-black/50 z-30 backdrop-blur-sm" onclick="closeSheet()"></div>
 
+<!-- Sheet: Nova/Editar Obra -->
 <div id="sheet-obra" class="hidden fixed bottom-0 inset-x-0 z-40 bg-white rounded-t-3xl p-6 shadow-2xl max-h-[92vh] overflow-y-auto hs slide-up">
   <div class="w-10 h-1 bg-slate-200 rounded-full mx-auto mb-5"></div>
   <h2 id="sheet-obra-title" class="text-xl font-bold text-slate-800 mb-5">Nova Obra</h2>
   <form id="form-obra" class="space-y-4">
     <input type="hidden" id="f-obra-id">
     <div>
-      <label class="block text-sm font-semibold text-slate-700 mb-1.5">Cliente *</label>
+      <label class="block text-sm font-semibold text-slate-700 mb-1.5">Cliente</label>
       <select id="f-obra-cliente" class="w-full px-4 py-3 border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white text-slate-800">
         <option value="">Selecionar cliente</option>
       </select>
@@ -147,12 +152,12 @@
       <input type="text" id="f-obra-desc" placeholder="ex: Janela aluminio sala" class="w-full px-4 py-3 border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500">
     </div>
     <div>
-      <label class="block text-sm font-semibold text-slate-700 mb-1.5">Valor total (R$) *</label>
+      <label class="block text-sm font-semibold text-slate-700 mb-1.5">Valor total (R$)</label>
       <input type="number" id="f-obra-valor" placeholder="0,00" step="0.01" min="0" class="w-full px-4 py-3 border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500">
     </div>
     <div>
       <label class="block text-sm font-semibold text-slate-700 mb-1.5">Forma de pagamento</label>
-      <input type="text" id="f-obra-formapag" placeholder="ex: A vista, Entrada + saldo na entrega, 2x..." class="w-full px-4 py-3 border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500">
+      <input type="text" id="f-obra-formapag" placeholder="ex: 50% entrada + 50% na entrega" class="w-full px-4 py-3 border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500">
     </div>
     <div>
       <label class="block text-sm font-semibold text-slate-700 mb-1.5">Status</label>
@@ -167,11 +172,11 @@
       <input type="date" id="f-obra-prazo" class="w-full px-4 py-3 border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500">
     </div>
     <div>
-      <label class="block text-sm font-semibold text-slate-700 mb-1.5">Servico a ser executado <span class="text-slate-400 font-normal">(opcional)</span></label>
-      <textarea id="f-obra-servico" rows="2" placeholder="Descreva detalhes do servico para o contrato..." class="w-full px-4 py-3 border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500 resize-none"></textarea>
+      <label class="block text-sm font-semibold text-slate-700 mb-1.5">Servico a executar <span class="text-slate-400 font-normal text-xs">(opcional — aparece no contrato)</span></label>
+      <textarea id="f-obra-servico" rows="2" placeholder="Descreva o servico para o contrato..." class="w-full px-4 py-3 border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500 resize-none"></textarea>
     </div>
     <div>
-      <label class="block text-sm font-semibold text-slate-700 mb-1.5">Observacoes</label>
+      <label class="block text-sm font-semibold text-slate-700 mb-1.5">Observacoes internas</label>
       <textarea id="f-obra-obs" rows="2" placeholder="Detalhes, medidas, etc." class="w-full px-4 py-3 border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500 resize-none"></textarea>
     </div>
     <div class="flex gap-3 pt-1">
@@ -181,7 +186,8 @@
   </form>
 </div>
 
-<div id="sheet-cliente" class="hidden fixed bottom-0 inset-x-0 z-40 bg-white rounded-t-3xl p-6 shadow-2xl max-h-[92vh] overflow-y-auto hs slide-up">
+<!-- Sheet: Novo/Editar Cliente -->
+<div id="sheet-cliente" class="hidden fixed bottom-0 inset-x-0 z-40 bg-white rounded-t-3xl p-6 shadow-2xl slide-up">
   <div class="w-10 h-1 bg-slate-200 rounded-full mx-auto mb-5"></div>
   <h2 id="sheet-cliente-title" class="text-xl font-bold text-slate-800 mb-5">Novo Cliente</h2>
   <form id="form-cliente" class="space-y-4">
@@ -191,7 +197,7 @@
       <input type="text" id="f-cli-nome" placeholder="Nome completo" class="w-full px-4 py-3 border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500">
     </div>
     <div>
-      <label class="block text-sm font-semibold text-slate-700 mb-1.5">CPF / RG *</label>
+      <label class="block text-sm font-semibold text-slate-700 mb-1.5">CPF / RG</label>
       <input type="text" id="f-cli-cpfrg" placeholder="000.000.000-00 ou RG" class="w-full px-4 py-3 border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500">
     </div>
     <div>
@@ -199,7 +205,7 @@
       <input type="tel" id="f-cli-tel" placeholder="(11) 99999-9999" class="w-full px-4 py-3 border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500">
     </div>
     <div>
-      <label class="block text-sm font-semibold text-slate-700 mb-1.5">Endereco *</label>
+      <label class="block text-sm font-semibold text-slate-700 mb-1.5">Endereco</label>
       <input type="text" id="f-cli-end" placeholder="Rua, numero, cidade" class="w-full px-4 py-3 border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500">
     </div>
     <div class="flex gap-3 pt-1">
@@ -209,6 +215,7 @@
   </form>
 </div>
 
+<!-- Sheet: Adicionar Material -->
 <div id="sheet-material" class="hidden fixed bottom-0 inset-x-0 z-40 bg-white rounded-t-3xl p-6 shadow-2xl slide-up">
   <div class="w-10 h-1 bg-slate-200 rounded-full mx-auto mb-5"></div>
   <h2 class="text-xl font-bold text-slate-800 mb-5">Adicionar Material</h2>
@@ -219,8 +226,14 @@
       <input type="text" id="f-mat-desc" placeholder="ex: Perfil aluminio 45mm" class="w-full px-4 py-3 border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500">
     </div>
     <div class="flex gap-3">
-      <div class="flex-1"><label class="block text-sm font-semibold text-slate-700 mb-1.5">Qtde</label><input type="text" id="f-mat-qtd" placeholder="6" class="w-full px-4 py-3 border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500"></div>
-      <div class="flex-1"><label class="block text-sm font-semibold text-slate-700 mb-1.5">Unidade</label><input type="text" id="f-mat-un" placeholder="barras / m2 / kg" class="w-full px-4 py-3 border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500"></div>
+      <div class="flex-1">
+        <label class="block text-sm font-semibold text-slate-700 mb-1.5">Qtde</label>
+        <input type="text" id="f-mat-qtd" placeholder="6" class="w-full px-4 py-3 border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500">
+      </div>
+      <div class="flex-1">
+        <label class="block text-sm font-semibold text-slate-700 mb-1.5">Unidade</label>
+        <input type="text" id="f-mat-un" placeholder="barras / m2 / kg" class="w-full px-4 py-3 border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500">
+      </div>
     </div>
     <div>
       <label class="block text-sm font-semibold text-slate-700 mb-1.5">Cor</label>
@@ -233,15 +246,28 @@
   </form>
 </div>
 
+<!-- Sheet: Registrar Pagamento -->
 <div id="sheet-pagamento" class="hidden fixed bottom-0 inset-x-0 z-40 bg-white rounded-t-3xl p-6 shadow-2xl slide-up">
   <div class="w-10 h-1 bg-slate-200 rounded-full mx-auto mb-5"></div>
   <h2 class="text-xl font-bold text-slate-800 mb-5">Registrar Pagamento</h2>
   <form id="form-pagamento" class="space-y-4">
     <input type="hidden" id="f-pag-obra-id">
-    <div><label class="block text-sm font-semibold text-slate-700 mb-1.5">Valor (R$) *</label><input type="number" id="f-pag-valor" placeholder="0,00" step="0.01" min="0" class="w-full px-4 py-3 border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500"></div>
-    <div><label class="block text-sm font-semibold text-slate-700 mb-1.5">Vencimento</label><input type="date" id="f-pag-venc" class="w-full px-4 py-3 border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500"></div>
-    <div><label class="block text-sm font-semibold text-slate-700 mb-1.5">Data recebida <span class="text-slate-400 font-normal">(branco se nao recebeu)</span></label><input type="date" id="f-pag-rec" class="w-full px-4 py-3 border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500"></div>
-    <div><label class="block text-sm font-semibold text-slate-700 mb-1.5">Descricao</label><input type="text" id="f-pag-obs" placeholder="ex: Entrada, 1a parcela..." class="w-full px-4 py-3 border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500"></div>
+    <div>
+      <label class="block text-sm font-semibold text-slate-700 mb-1.5">Valor (R$) *</label>
+      <input type="number" id="f-pag-valor" placeholder="0,00" step="0.01" min="0" class="w-full px-4 py-3 border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500">
+    </div>
+    <div>
+      <label class="block text-sm font-semibold text-slate-700 mb-1.5">Vencimento</label>
+      <input type="date" id="f-pag-venc" class="w-full px-4 py-3 border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500">
+    </div>
+    <div>
+      <label class="block text-sm font-semibold text-slate-700 mb-1.5">Data recebida <span class="text-slate-400 font-normal">(deixe em branco se pendente)</span></label>
+      <input type="date" id="f-pag-rec" class="w-full px-4 py-3 border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500">
+    </div>
+    <div>
+      <label class="block text-sm font-semibold text-slate-700 mb-1.5">Descricao</label>
+      <input type="text" id="f-pag-obs" placeholder="ex: Entrada, 1a parcela..." class="w-full px-4 py-3 border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500">
+    </div>
     <div class="flex gap-3 pt-1">
       <button type="button" onclick="closeSheet()" class="flex-1 py-3.5 border border-slate-200 rounded-xl font-semibold text-slate-600 hover:bg-slate-50">Cancelar</button>
       <button type="submit" class="flex-1 py-3.5 bg-blue-600 rounded-xl font-semibold text-white hover:bg-blue-700 shadow-sm">Salvar</button>
@@ -249,583 +275,603 @@
   </form>
 </div>
 
+<!-- Sheet: Detalhe Cliente -->
 <div id="sheet-cli-det" class="hidden fixed bottom-0 inset-x-0 z-40 bg-white rounded-t-3xl p-6 shadow-2xl max-h-[85vh] overflow-y-auto hs slide-up">
   <div class="w-10 h-1 bg-slate-200 rounded-full mx-auto mb-5"></div>
   <div id="cli-det-content"></div>
 </div>
 
+<!-- Sheet: Confirmacao -->
 <div id="sheet-confirm" class="hidden fixed inset-x-4 top-1/2 -translate-y-1/2 z-50 bg-white rounded-2xl p-6 shadow-2xl slide-up">
-  <h2 id="confirm-title" class="text-lg font-bold text-slate-800 mb-2">Confirmar exclusao</h2>
+  <h2 class="text-lg font-bold text-slate-800 mb-2">Confirmar exclusao</h2>
   <p id="confirm-msg" class="text-slate-500 text-sm mb-6">Esta acao nao pode ser desfeita.</p>
   <div class="flex gap-3">
     <button onclick="closeSheet()" class="flex-1 py-3 border border-slate-200 rounded-xl font-semibold text-slate-600">Cancelar</button>
     <button id="confirm-ok" class="flex-1 py-3 bg-red-600 rounded-xl font-semibold text-white">Excluir</button>
   </div>
 </div>
-<script>
-const FB_CONFIG={apiKey:"AIzaSyBpGYRmstm0KmN3BosJwiP7ttPZVcsPGwA",authDomain:"bela-art-sistema.firebaseapp.com",projectId:"bela-art-sistema",storageBucket:"bela-art-sistema.firebasestorage.app",messagingSenderId:"1063850554420",appId:"1:1063850554420:web:9eed0a2b1d70519e1bc661"};
-firebase.initializeApp(FB_CONFIG);
-const auth=firebase.auth(),db=firebase.firestore();
-const EMAILS_AUTORIZADOS=['brunoferrack@gmail.com','contatojoco@gmail.com'];
-const CONTA_COMPARTILHADA='bela-art';
-let uid=null;
-const col=(path)=>db.collection(`users/${uid}/${path}`);
-let obras=[],clientes=[],pagamentos=[],materiais=[];
-let obraFilter='todas',recFilter='pendente',detObraId=null;
 
-document.getElementById('btn-login').onclick=()=>{
-  const provider=new firebase.auth.GoogleAuthProvider();
-  const isMobile=/Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
-  if(isMobile){auth.signInWithRedirect(provider);}else{auth.signInWithPopup(provider).catch(e=>{if(e.code==='auth/popup-blocked')auth.signInWithRedirect(provider);else alert('Erro: '+e.message);});}  
+<script>
+const FB_CONFIG = {
+  apiKey: "AIzaSyBpGYRmstm0KmN3BosJwiP7ttPZVcsPGwA",
+  authDomain: "bela-art-sistema.firebaseapp.com",
+  projectId: "bela-art-sistema",
+  storageBucket: "bela-art-sistema.firebasestorage.app",
+  messagingSenderId: "1063850554420",
+  appId: "1:1063850554420:web:9eed0a2b1d70519e1bc661"
 };
-auth.onAuthStateChanged(user=>{
-  if(user){
-    if(!EMAILS_AUTORIZADOS.includes(user.email)){auth.signOut();alert('Acesso nao autorizado.');return;}
-    uid=CONTA_COMPARTILHADA;show('screen-app');hide('screen-login');startListeners();goTo('obras');
-  }else{show('screen-login');hide('screen-app');}
+firebase.initializeApp(FB_CONFIG);
+const auth = firebase.auth();
+const db   = firebase.firestore();
+const EMAILS_AUTORIZADOS = ['brunoferrack@gmail.com', 'contatojoco@gmail.com'];
+const CONTA_COMPARTILHADA = 'bela-art';
+let uid = null;
+const col = (path) => db.collection('users/' + uid + '/' + path);
+let obras = [], clientes = [], pagamentos = [], materiais = [];
+let obraFilter = 'todas', recFilter = 'pendente', detObraId = null, activePage = 'obras';
+
+// Login — popup no desktop, redirect no mobile
+document.getElementById('btn-login').onclick = () => {
+  const provider = new firebase.auth.GoogleAuthProvider();
+  if (/Android|iPhone|iPad|iPod/i.test(navigator.userAgent)) {
+    auth.signInWithRedirect(provider);
+  } else {
+    auth.signInWithPopup(provider).catch(e => {
+      if (e.code === 'auth/popup-blocked') auth.signInWithRedirect(provider);
+      else alert('Erro ao entrar: ' + e.message);
+    });
+  }
+};
+auth.getRedirectResult().catch(() => {});
+
+auth.onAuthStateChanged(user => {
+  if (user) {
+    if (!EMAILS_AUTORIZADOS.includes(user.email)) { auth.signOut(); alert('Acesso nao autorizado.'); return; }
+    uid = CONTA_COMPARTILHADA;
+    document.getElementById('screen-app').classList.remove('hidden');
+    document.getElementById('screen-login').classList.add('hidden');
+    startListeners();
+    goTo('obras');
+  } else {
+    document.getElementById('screen-login').classList.remove('hidden');
+    document.getElementById('screen-app').classList.add('hidden');
+  }
 });
 
-function startListeners(){
-  col('obras').orderBy('ts','desc').onSnapshot(s=>{
-    obras=s.docs.map(d=>({id:d.id,...d.data()}));
-    if(activePage==='obras')renderObras();
-    if(activePage==='obra-det')renderObraDet(detObraId);
-    if(activePage==='receber')renderReceber();
+function startListeners() {
+  col('obras').orderBy('ts', 'desc').onSnapshot(s => {
+    obras = s.docs.map(d => ({ id: d.id, ...d.data() }));
+    if (activePage === 'obras') renderObras();
+    if (activePage === 'obra-det') renderObraDet(detObraId);
+    if (activePage === 'receber') renderReceber();
   });
-  col('clientes').orderBy('nome').onSnapshot(s=>{
-    clientes=s.docs.map(d=>({id:d.id,...d.data()}));
-    if(activePage==='clientes')renderClientes();
+  col('clientes').orderBy('nome').onSnapshot(s => {
+    clientes = s.docs.map(d => ({ id: d.id, ...d.data() }));
+    if (activePage === 'clientes') renderClientes();
   });
-  col('pagamentos').orderBy('ts','desc').onSnapshot(s=>{
-    pagamentos=s.docs.map(d=>({id:d.id,...d.data()}));
-    if(activePage==='receber')renderReceber();
-    if(activePage==='obra-det')renderObraDet(detObraId);
+  col('pagamentos').orderBy('ts', 'desc').onSnapshot(s => {
+    pagamentos = s.docs.map(d => ({ id: d.id, ...d.data() }));
+    if (activePage === 'receber') renderReceber();
+    if (activePage === 'obra-det') renderObraDet(detObraId);
   });
-  col('materiais').orderBy('ts','desc').onSnapshot(s=>{
-    materiais=s.docs.map(d=>({id:d.id,...d.data()}));
-    if(activePage==='compras')renderCompras();
-    if(activePage==='obra-det')renderObraDet(detObraId);
+  col('materiais').orderBy('ts', 'desc').onSnapshot(s => {
+    materiais = s.docs.map(d => ({ id: d.id, ...d.data() }));
+    if (activePage === 'compras') renderCompras();
+    if (activePage === 'obra-det') renderObraDet(detObraId);
   });
 }
 
-let activePage='obras';
-const pages=['obras','obra-det','clientes','receber','compras'];
-const pageTitles={obras:'Obras','obra-det':'',clientes:'Clientes',receber:'A Receber',compras:'Compras'};
+const pages = ['obras','obra-det','clientes','receber','compras'];
+const pageTitles = { obras:'Obras','obra-det':'',clientes:'Clientes',receber:'A Receber',compras:'Compras' };
 
-function goTo(page,obraId=null){
-  activePage=page;detObraId=obraId;
-  pages.forEach(p=>{const el=document.getElementById('page-'+p);if(el)el.classList.toggle('hidden',p!==page);});
-  document.getElementById('page-title').textContent=pageTitles[page]||'';
-  const back=document.getElementById('btn-back'),add=document.getElementById('btn-add');
-  back.classList.toggle('hidden',page!=='obra-det');
-  add.classList.toggle('hidden',page==='obra-det'||page==='compras'||page==='receber');
-  if(page!=='obra-det'&&page!=='compras'){const lbl={obras:'+ Nova',clientes:'+ Novo',receber:'+ Parcela'};add.textContent=lbl[page]||'+ Novo';}
-  document.querySelectorAll('.nav-btn').forEach(b=>{const act=b.dataset.page===page||(page==='obra-det'&&b.dataset.page==='obras');b.classList.toggle('text-blue-600',act);b.classList.toggle('text-slate-400',!act);});
-  const renders={obras:renderObras,clientes:renderClientes,receber:renderReceber,compras:renderCompras,'obra-det':()=>renderObraDet(obraId)};
-  if(renders[page])renders[page]();
+function goTo(page, obraId) {
+  obraId = obraId || null;
+  activePage = page; detObraId = obraId;
+  pages.forEach(p => { const el = document.getElementById('page-'+p); if (el) el.classList.toggle('hidden', p !== page); });
+  document.getElementById('page-title').textContent = pageTitles[page] || '';
+  const back = document.getElementById('btn-back'), add = document.getElementById('btn-add');
+  back.classList.toggle('hidden', page !== 'obra-det');
+  add.classList.toggle('hidden', page === 'obra-det' || page === 'compras' || page === 'receber');
+  if (page !== 'obra-det' && page !== 'compras') { const lbl = {obras:'+ Nova',clientes:'+ Novo',receber:'+ Parcela'}; add.textContent = lbl[page] || '+ Novo'; }
+  document.querySelectorAll('.nav-btn').forEach(b => {
+    const act = b.dataset.page === page || (page === 'obra-det' && b.dataset.page === 'obras');
+    b.classList.toggle('text-blue-600', act); b.classList.toggle('text-slate-400', !act);
+  });
+  const renders = { obras: renderObras, clientes: renderClientes, receber: renderReceber, compras: renderCompras, 'obra-det': () => renderObraDet(obraId) };
+  if (renders[page]) renders[page]();
 }
-document.getElementById('btn-back').onclick=()=>goTo('obras');
-document.querySelectorAll('.nav-btn').forEach(b=>b.addEventListener('click',()=>goTo(b.dataset.page)));
-document.getElementById('btn-add').onclick=()=>{
-  if(activePage==='obras')openSheetObra();
-  else if(activePage==='clientes')openSheetCliente();
-  else if(activePage==='receber')openSheetPagamento(null);
+
+document.getElementById('btn-back').onclick = () => goTo('obras');
+document.querySelectorAll('.nav-btn').forEach(b => b.addEventListener('click', () => goTo(b.dataset.page)));
+document.getElementById('btn-add').onclick = () => {
+  if (activePage === 'obras') openSheetObra();
+  else if (activePage === 'clientes') openSheetCliente();
+  else if (activePage === 'receber') openSheetPagamento(null);
 };
 
-function show(id){document.getElementById(id).classList.remove('hidden');}
-function hide(id){document.getElementById(id).classList.add('hidden');}
-function money(v){return 'R$ '+(v||0).toLocaleString('pt-BR',{minimumFractionDigits:2,maximumFractionDigits:2});}
-function fmtDate(s){if(!s)return '';const [y,m,d]=s.split('-');return `${d}/${m}/${y}`;}
-function todayStr(){return new Date().toISOString().split('T')[0];}
-function isLate(d){return d&&d<todayStr();}
-function initials(nome){return (nome||'?').split(' ').slice(0,2).map(w=>w[0]).join('').toUpperCase();}
+function show(id) { document.getElementById(id).classList.remove('hidden'); }
+function hide(id) { document.getElementById(id).classList.add('hidden'); }
+function money(v) { return 'R$ ' + (v||0).toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 }); }
+function fmtDate(s) { if (!s) return ''; const [y,m,d] = s.split('-'); return d+'/'+m+'/'+y; }
+function todayStr() { return new Date().toISOString().split('T')[0]; }
+function isLate(d) { return d && d < todayStr(); }
+function initials(nome) { return (nome||'?').split(' ').slice(0,2).map(w=>w[0]).join('').toUpperCase(); }
 
-const STATUS={'em-andamento':{label:'Em andamento',cls:'bg-amber-100 text-amber-800'},'concluida':{label:'Concluida',cls:'bg-blue-100 text-blue-800'},'paga':{label:'Paga',cls:'bg-green-100 text-green-800'}};
-function badge(status){const s=STATUS[status]||STATUS['em-andamento'];return `<span class="inline-flex px-2.5 py-0.5 rounded-full text-xs font-semibold ${s.cls}">${s.label}</span>`;}
+const STATUS = {
+  'em-andamento': { label: 'Em andamento', cls: 'bg-amber-100 text-amber-800' },
+  'concluida':    { label: 'Concluida',     cls: 'bg-blue-100 text-blue-800' },
+  'paga':         { label: 'Paga',          cls: 'bg-green-100 text-green-800' }
+};
+function badge(status) {
+  const s = STATUS[status] || STATUS['em-andamento'];
+  return '<span class="inline-flex px-2.5 py-0.5 rounded-full text-xs font-semibold ' + s.cls + '">' + s.label + '</span>';
+}
 
-function openSheet(id){show('backdrop');show(id);}
-function closeSheet(){
+function openSheet(id) { show('backdrop'); show(id); }
+function closeSheet() {
   ['sheet-obra','sheet-cliente','sheet-material','sheet-pagamento','sheet-cli-det','sheet-confirm'].forEach(hide);
-  const dyn=document.getElementById('sheet-status-dyn');if(dyn)dyn.classList.add('hidden');
+  const dyn = document.getElementById('sheet-status-dyn'); if (dyn) dyn.classList.add('hidden');
   hide('backdrop');
 }
 
-function renderObras(){
-  const fil=obraFilter==='todas'?obras:obras.filter(o=>o.status===obraFilter);
-  const list=document.getElementById('list-obras'),empty=document.getElementById('empty-obras');
-  if(!fil.length){list.innerHTML='';empty.classList.remove('hidden');return;}
+function renderObras() {
+  const fil = obraFilter === 'todas' ? obras : obras.filter(o => o.status === obraFilter);
+  const list = document.getElementById('list-obras'), empty = document.getElementById('empty-obras');
+  if (!fil.length) { list.innerHTML = ''; empty.classList.remove('hidden'); return; }
   empty.classList.add('hidden');
-  list.innerHTML=fil.map(obra=>{
-    const pags=pagamentos.filter(p=>p.obraId===obra.id&&p.dataPago);
-    const recebido=pags.reduce((s,p)=>s+p.valor,0);
-    const saldo=(obra.valorTotal||0)-recebido;
-    const pct=obra.valorTotal>0?Math.min(100,Math.round(recebido/obra.valorTotal*100)):0;
-    const bc={'em-andamento':'border-l-amber-400','concluida':'border-l-blue-400','paga':'border-l-green-500'};
-    return `<div class="bg-white rounded-2xl p-4 shadow-sm border border-slate-100 border-l-4 ${bc[obra.status]||'border-l-slate-300'} cursor-pointer active:scale-[0.98] transition-transform" onclick="goTo('obra-det','${obra.id}')">
-      <div class="flex items-start justify-between mb-2.5">
-        <div class="flex-1 min-w-0 mr-3"><p class="font-bold text-slate-800 leading-tight">${obra.descricao}</p><p class="text-sm text-slate-500 mt-0.5">${obra.clienteNome||'Sem cliente'}</p></div>
-        ${badge(obra.status)}
-      </div>
-      <div class="flex justify-between items-end">
-        <div><p class="text-xs text-slate-400 mb-0.5">Total</p><p class="font-bold text-slate-800">${money(obra.valorTotal)}</p></div>
-        <div class="text-right"><p class="text-xs text-slate-400 mb-0.5">Saldo</p><p class="font-bold ${saldo>0.01?'text-amber-600':'text-green-600'}">${money(saldo)}</p></div>
-      </div>
-      ${obra.valorTotal>0?`<div class="mt-3"><div class="flex justify-between text-xs text-slate-400 mb-1"><span>${pct}% recebido</span><span>${money(recebido)}</span></div><div class="h-1.5 bg-slate-100 rounded-full"><div class="h-full bg-green-500 rounded-full" style="width:${pct}%"></div></div></div>`:''}
-      ${obra.prazo?`<p class="text-xs text-slate-400 mt-2.5">Prazo: ${fmtDate(obra.prazo)}</p>`:''}
-    </div>`;
+  const borderCls = {'em-andamento':'border-l-amber-400','concluida':'border-l-blue-400','paga':'border-l-green-500'};
+  list.innerHTML = fil.map(obra => {
+    const recebido = pagamentos.filter(p=>p.obraId===obra.id&&p.dataPago).reduce((s,p)=>s+p.valor,0);
+    const saldo = (obra.valorTotal||0) - recebido;
+    const pct = obra.valorTotal > 0 ? Math.min(100, Math.round(recebido/obra.valorTotal*100)) : 0;
+    return '<div class="bg-white rounded-2xl p-4 shadow-sm border border-slate-100 border-l-4 ' + (borderCls[obra.status]||'border-l-slate-300') + ' cursor-pointer active:scale-[0.98] transition-transform" onclick="goTo(\'obra-det\',\'' + obra.id + '\')">'
+      + '<div class="flex items-start justify-between mb-2.5"><div class="flex-1 min-w-0 mr-3"><p class="font-bold text-slate-800 leading-tight">' + obra.descricao + '</p><p class="text-sm text-slate-500 mt-0.5">' + (obra.clienteNome||'Sem cliente') + '</p></div>' + badge(obra.status) + '</div>'
+      + '<div class="flex justify-between items-end"><div><p class="text-xs text-slate-400 mb-0.5">Total</p><p class="font-bold text-slate-800">' + money(obra.valorTotal) + '</p></div><div class="text-right"><p class="text-xs text-slate-400 mb-0.5">Saldo</p><p class="font-bold ' + (saldo>0.01?'text-amber-600':'text-green-600') + '">' + money(saldo) + '</p></div></div>'
+      + (obra.valorTotal > 0 ? '<div class="mt-3"><div class="flex justify-between text-xs text-slate-400 mb-1"><span>' + pct + '% recebido</span><span>' + money(recebido) + '</span></div><div class="h-1.5 bg-slate-100 rounded-full"><div class="h-full bg-green-500 rounded-full" style="width:' + pct + '%"></div></div></div>' : '')
+      + (obra.prazo ? '<p class="text-xs text-slate-400 mt-2.5">Prazo: ' + fmtDate(obra.prazo) + '</p>' : '')
+      + '</div>';
   }).join('');
 }
-document.querySelectorAll('.f-btn').forEach(b=>b.addEventListener('click',()=>{
-  obraFilter=b.dataset.f;
-  document.querySelectorAll('.f-btn').forEach(x=>{x.classList.toggle('bg-blue-600',x===b);x.classList.toggle('text-white',x===b);x.classList.toggle('bg-white',x!==b);x.classList.toggle('text-slate-600',x!==b);x.classList.toggle('border',x!==b);x.classList.toggle('border-slate-200',x!==b);});
+
+document.querySelectorAll('.f-btn').forEach(b => b.addEventListener('click', () => {
+  obraFilter = b.dataset.f;
+  document.querySelectorAll('.f-btn').forEach(x => {
+    x.classList.toggle('bg-blue-600',x===b); x.classList.toggle('text-white',x===b);
+    x.classList.toggle('bg-white',x!==b); x.classList.toggle('text-slate-600',x!==b);
+    x.classList.toggle('border',x!==b); x.classList.toggle('border-slate-200',x!==b);
+  });
   renderObras();
 }));
-function renderObraDet(obraId){
-  const obra=obras.find(o=>o.id===obraId);if(!obra)return;
-  document.getElementById('page-title').textContent=obra.descricao.length>22?obra.descricao.slice(0,22)+'...':obra.descricao;
-  const mats=materiais.filter(m=>m.obraId===obraId);
-  const pags=pagamentos.filter(p=>p.obraId===obraId);
-  const recebido=pags.filter(p=>p.dataPago).reduce((s,p)=>s+p.valor,0);
-  const saldo=(obra.valorTotal||0)-recebido;
-  const cliente=clientes.find(c=>c.id===obra.clienteId);
-  const podeCont=!!(cliente&&cliente.cpfrg&&cliente.end&&obra.valorTotal&&obra.formaPag&&obra.prazo);
-  const cbc=podeCont
-    ?'w-full py-3.5 bg-blue-700 rounded-xl font-semibold text-white text-sm flex items-center justify-center gap-2 hover:bg-blue-800 active:scale-[0.98] transition-all shadow-sm'
-    :'w-full py-3.5 bg-slate-100 rounded-xl font-semibold text-slate-400 text-sm flex items-center justify-center gap-2';
 
-  document.getElementById('obra-det-content').innerHTML=`
-    <div class="bg-white rounded-2xl p-4 shadow-sm border border-slate-100 mb-4">
-      <div class="flex items-start justify-between mb-3">
-        <div><h2 class="font-bold text-slate-800 text-lg leading-tight">${obra.descricao}</h2><p class="text-slate-500 text-sm mt-0.5">${obra.clienteNome||'---'}</p></div>
-        ${badge(obra.status)}
-      </div>
-      <div class="grid grid-cols-3 gap-2 py-3 border-t border-b border-slate-100 mb-3">
-        <div class="text-center"><p class="text-xs text-slate-400 mb-1">Total</p><p class="font-bold text-sm text-slate-800">${money(obra.valorTotal)}</p></div>
-        <div class="text-center border-x border-slate-100"><p class="text-xs text-slate-400 mb-1">Recebido</p><p class="font-bold text-sm text-green-600">${money(recebido)}</p></div>
-        <div class="text-center"><p class="text-xs text-slate-400 mb-1">Saldo</p><p class="font-bold text-sm text-amber-600">${money(saldo)}</p></div>
-      </div>
-      ${obra.prazo?`<p class="text-xs text-slate-400 mb-1">Prazo: ${fmtDate(obra.prazo)}</p>`:''}
-      ${obra.formaPag?`<p class="text-xs text-slate-400 mb-2">Pagamento: ${obra.formaPag}</p>`:''}
-      ${obra.servico?`<p class="text-sm text-slate-500 mb-2">${obra.servico}</p>`:''}
-      ${obra.observacoes?`<p class="text-sm text-slate-500 italic mb-3">${obra.observacoes}</p>`:''}
-      <div class="flex gap-2 mb-3">
-        <button onclick="openSheetObra('${obra.id}')" class="flex-1 py-2.5 text-sm border border-slate-200 rounded-xl text-slate-600 font-semibold hover:bg-slate-50">Editar</button>
-        <button onclick="openSheetStatus('${obra.id}','${obra.status}')" class="flex-1 py-2.5 text-sm bg-blue-50 rounded-xl text-blue-700 font-semibold">Mudar status</button>
-        <button onclick="confirmDel('obra','${obra.id}')" class="py-2.5 px-3 text-sm text-red-500 border border-red-100 rounded-xl hover:bg-red-50">
-          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/></svg>
-        </button>
-      </div>
-      <button onclick="emitirContrato('${obra.id}')" class="${cbc}">
-        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>
-        Emitir Contrato
-      </button>
-      ${!podeCont?'<p class="text-xs text-slate-400 text-center mt-1.5">Preencha: CPF/RG e endereco do cliente + forma de pagamento + prazo</p>':''}
-    </div>
-    <div class="bg-white rounded-2xl shadow-sm border border-slate-100 mb-4">
-      <div class="flex items-center justify-between px-4 py-3.5 border-b border-slate-100">
-        <h3 class="font-bold text-slate-700">Materiais <span class="text-slate-400 font-normal text-sm">(${mats.length})</span></h3>
-        <button onclick="openSheetMaterial('${obraId}')" class="text-sm text-blue-600 font-semibold">+ Adicionar</button>
-      </div>
-      <div class="divide-y divide-slate-50">
-        ${!mats.length?'<p class="text-sm text-slate-400 text-center py-6">Nenhum material</p>':mats.map(m=>`
-        <div class="flex items-center gap-3 px-4 py-3 ${m.comprado?'opacity-50':''}">
-          <button onclick="toggleMat('${m.id}',${!!m.comprado})" class="w-6 h-6 rounded-full border-2 flex-shrink-0 flex items-center justify-center transition-all ${m.comprado?'bg-green-500 border-green-500':'border-slate-300 hover:border-blue-400'}">
-            ${m.comprado?'<svg class="w-3 h-3 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7"/></svg>':''}
-          </button>
-          <div class="flex-1 min-w-0"><p class="text-sm font-medium text-slate-700 ${m.comprado?'line-through':''}">${m.descricao}</p><p class="text-xs text-slate-400">${[m.qtd?(m.qtd+(m.un?' '+m.un:'')):null,m.cor?'Cor: '+m.cor:null].filter(Boolean).join(' - ')||''}</p></div>
-          <button onclick="delMat('${m.id}')" class="text-slate-200 hover:text-red-400 transition-colors flex-shrink-0"><svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg></button>
-        </div>`).join('')}
-      </div>
-    </div>
-    <div class="bg-white rounded-2xl shadow-sm border border-slate-100 mb-4">
-      <div class="flex items-center justify-between px-4 py-3.5 border-b border-slate-100">
-        <h3 class="font-bold text-slate-700">Pagamentos <span class="text-slate-400 font-normal text-sm">(${pags.length})</span></h3>
-        <button onclick="openSheetPagamento('${obraId}')" class="text-sm text-blue-600 font-semibold">+ Adicionar</button>
-      </div>
-      <div class="divide-y divide-slate-50">
-        ${!pags.length?'<p class="text-sm text-slate-400 text-center py-6">Nenhum pagamento</p>':pags.map(p=>{
-          const late=!p.dataPago&&isLate(p.venc);
-          return `<div class="flex items-center gap-3 px-4 py-3">
-            <button onclick="togglePag('${p.id}',${!!p.dataPago})" class="w-6 h-6 rounded-full border-2 flex-shrink-0 flex items-center justify-center transition-all ${p.dataPago?'bg-green-500 border-green-500':late?'border-red-400 hover:border-red-500':'border-slate-300 hover:border-green-400'}">
-              ${p.dataPago?'<svg class="w-3 h-3 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7"/></svg>':''}
-            </button>
-            <div class="flex-1 min-w-0">
-              <div class="flex items-center justify-between gap-2">
-                <p class="font-bold text-slate-800">${money(p.valor)}</p>
-                <span class="text-xs font-semibold shrink-0 ${p.dataPago?'text-green-600':late?'text-red-500':'text-amber-600'}">
-                  ${p.dataPago?`Recebido ${fmtDate(p.dataPago)}`:late?`Atrasado ${fmtDate(p.venc)}`:p.venc?`Vence ${fmtDate(p.venc)}`:'Pendente'}
-                </span>
-              </div>
-              ${p.obs?`<p class="text-xs text-slate-400 mt-0.5 truncate">${p.obs}</p>`:''}
-            </div>
-            <button onclick="delPag('${p.id}')" class="text-slate-200 hover:text-red-400 transition-colors flex-shrink-0"><svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg></button>
-          </div>`;
-        }).join('')}
-      </div>
-    </div>`;
-}
-function openSheetStatus(obraId,cur){
-  const opts=[{v:'em-andamento',l:'Em andamento',cls:'bg-amber-100 text-amber-800'},{v:'concluida',l:'Concluida',cls:'bg-blue-100 text-blue-800'},{v:'paga',l:'Paga',cls:'bg-green-100 text-green-800'}];
-  let el=document.getElementById('sheet-status-dyn');
-  if(!el){el=document.createElement('div');el.id='sheet-status-dyn';document.body.appendChild(el);}
-  el.className='fixed bottom-0 inset-x-0 z-40 bg-white rounded-t-3xl p-6 shadow-2xl slide-up';
-  el.innerHTML=`<div class="w-10 h-1 bg-slate-200 rounded-full mx-auto mb-5"></div><h2 class="text-xl font-bold text-slate-800 mb-4">Mudar Status</h2><div class="space-y-3">
-    ${opts.map(o=>`<button onclick="col('obras').doc('${obraId}').update({status:'${o.v}'});closeSheet()" class="w-full flex items-center gap-3 p-4 rounded-2xl border-2 text-left ${o.v===cur?'border-blue-500 bg-blue-50':'border-slate-200'}"><span class="${o.cls} px-3 py-1 rounded-full text-sm font-semibold">${o.l}</span>${o.v===cur?'<span class="ml-auto text-blue-500 text-sm font-semibold">atual</span>':''}</button>`).join('')}
-  </div><button onclick="closeSheet()" class="w-full mt-4 py-3 border border-slate-200 rounded-xl font-semibold text-slate-600">Fechar</button>`;
-  show('backdrop');el.classList.remove('hidden');
+function renderObraDet(obraId) {
+  const obra = obras.find(o => o.id === obraId); if (!obra) return;
+  const title = obra.descricao.length > 22 ? obra.descricao.slice(0,22)+'...' : obra.descricao;
+  document.getElementById('page-title').textContent = title;
+  const mats = materiais.filter(m => m.obraId === obraId);
+  const pags = pagamentos.filter(p => p.obraId === obraId);
+  const recebido = pags.filter(p=>p.dataPago).reduce((s,p)=>s+p.valor, 0);
+  const saldo = (obra.valorTotal||0) - recebido;
+  const cliente = clientes.find(c => c.id === obra.clienteId);
+
+  // Calcula o que falta para emitir o contrato
+  const falta = [];
+  if (!cliente) falta.push('cliente vinculado');
+  else { if (!cliente.cpfrg) falta.push('CPF/RG do cliente'); if (!cliente.end) falta.push('endereco do cliente'); }
+  if (!obra.valorTotal) falta.push('valor do servico');
+  if (!obra.formaPag) falta.push('forma de pagamento');
+  if (!obra.prazo) falta.push('prazo de entrega');
+  const podeCont = falta.length === 0;
+
+  const matRows = !mats.length ? '<p class="text-sm text-slate-400 text-center py-6">Nenhum material</p>' : mats.map(m =>
+    '<div class="flex items-center gap-3 px-4 py-3 ' + (m.comprado?'opacity-50':'') + '">'
+    + '<button onclick="toggleMat(\'' + m.id + '\',' + (!!m.comprado) + ')" class="w-6 h-6 rounded-full border-2 flex-shrink-0 flex items-center justify-center transition-all ' + (m.comprado?'bg-green-500 border-green-500':'border-slate-300 hover:border-blue-400') + '">'
+    + (m.comprado?'<svg class="w-3 h-3 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7"/></svg>':'')
+    + '</button>'
+    + '<div class="flex-1 min-w-0"><p class="text-sm font-medium text-slate-700 ' + (m.comprado?'line-through':'') + '">' + m.descricao + '</p>'
+    + '<p class="text-xs text-slate-400">' + ([m.qtd?(m.qtd+(m.un?' '+m.un:'')):null,m.cor?'Cor: '+m.cor:null].filter(Boolean).join(' . ')||'') + '</p></div>'
+    + '<button onclick="delMat(\'' + m.id + '\')" class="text-slate-200 hover:text-red-400 transition-colors flex-shrink-0"><svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg></button>'
+    + '</div>'
+  ).join('');
+
+  const pagRows = !pags.length ? '<p class="text-sm text-slate-400 text-center py-6">Nenhum pagamento</p>' : pags.map(p => {
+    const late = !p.dataPago && isLate(p.venc);
+    return '<div class="flex items-center gap-3 px-4 py-3">'
+      + '<button onclick="togglePag(\'' + p.id + '\',' + (!!p.dataPago) + ')" class="w-6 h-6 rounded-full border-2 flex-shrink-0 flex items-center justify-center transition-all ' + (p.dataPago?'bg-green-500 border-green-500':late?'border-red-400 hover:border-red-500':'border-slate-300 hover:border-green-400') + '">'
+      + (p.dataPago?'<svg class="w-3 h-3 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7"/></svg>':'')
+      + '</button>'
+      + '<div class="flex-1 min-w-0"><div class="flex items-center justify-between gap-2"><p class="font-bold text-slate-800">' + money(p.valor) + '</p>'
+      + '<span class="text-xs font-semibold shrink-0 ' + (p.dataPago?'text-green-600':late?'text-red-500':'text-amber-600') + '">' + (p.dataPago?('Recebido '+fmtDate(p.dataPago)):late?('Atrasado '+fmtDate(p.venc)):p.venc?('Vence '+fmtDate(p.venc)):'Pendente') + '</span></div>'
+      + (p.obs?'<p class="text-xs text-slate-400 mt-0.5 truncate">'+p.obs+'</p>':'')
+      + '</div>'
+      + '<button onclick="delPag(\'' + p.id + '\')" class="text-slate-200 hover:text-red-400 transition-colors flex-shrink-0"><svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg></button>'
+      + '</div>';
+  }).join('');
+
+  document.getElementById('obra-det-content').innerHTML =
+    '<div class="bg-white rounded-2xl p-4 shadow-sm border border-slate-100 mb-4">'
+    + '<div class="flex items-start justify-between mb-3"><div><h2 class="font-bold text-slate-800 text-lg leading-tight">' + obra.descricao + '</h2><p class="text-slate-500 text-sm mt-0.5">' + (obra.clienteNome||'Sem cliente') + '</p></div>' + badge(obra.status) + '</div>'
+    + '<div class="grid grid-cols-3 gap-2 py-3 border-t border-b border-slate-100 mb-3">'
+    + '<div class="text-center"><p class="text-xs text-slate-400 mb-1">Total</p><p class="font-bold text-sm text-slate-800">' + money(obra.valorTotal) + '</p></div>'
+    + '<div class="text-center border-x border-slate-100"><p class="text-xs text-slate-400 mb-1">Recebido</p><p class="font-bold text-sm text-green-600">' + money(recebido) + '</p></div>'
+    + '<div class="text-center"><p class="text-xs text-slate-400 mb-1">Saldo</p><p class="font-bold text-sm text-amber-600">' + money(saldo) + '</p></div>'
+    + '</div>'
+    + (obra.prazo ? '<p class="text-xs text-slate-400 mb-2">Prazo: ' + fmtDate(obra.prazo) + '</p>' : '')
+    + (obra.formaPag ? '<p class="text-xs text-slate-500 mb-2">Pagamento: ' + obra.formaPag + '</p>' : '')
+    + (obra.observacoes ? '<p class="text-sm text-slate-500 italic mb-3">' + obra.observacoes + '</p>' : '')
+    + '<div class="flex gap-2">'
+    + '<button onclick="openSheetObra(\'' + obra.id + '\')" class="flex-1 py-2.5 text-sm border border-slate-200 rounded-xl text-slate-600 font-semibold hover:bg-slate-50">Editar</button>'
+    + '<button onclick="openSheetStatus(\'' + obra.id + '\',\'' + obra.status + '\')" class="flex-1 py-2.5 text-sm bg-blue-50 rounded-xl text-blue-700 font-semibold">Mudar status</button>'
+    + '<button onclick="confirmDel(\'obra\',\'' + obra.id + '\')" class="py-2.5 px-3 text-sm text-red-500 border border-red-100 rounded-xl hover:bg-red-50"><svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/></svg></button>'
+    + '</div></div>'
+    + '<div class="bg-white rounded-2xl shadow-sm border border-slate-100 mb-4">'
+    + '<div class="flex items-center justify-between px-4 py-3.5 border-b border-slate-100"><h3 class="font-bold text-slate-700">Materiais <span class="text-slate-400 font-normal text-sm">(' + mats.length + ')</span></h3><button onclick="openSheetMaterial(\'' + obraId + '\')" class="text-sm text-blue-600 font-semibold">+ Adicionar</button></div>'
+    + '<div class="divide-y divide-slate-50">' + matRows + '</div></div>'
+    + '<div class="bg-white rounded-2xl shadow-sm border border-slate-100 mb-4">'
+    + '<div class="flex items-center justify-between px-4 py-3.5 border-b border-slate-100"><h3 class="font-bold text-slate-700">Pagamentos <span class="text-slate-400 font-normal text-sm">(' + pags.length + ')</span></h3><button onclick="openSheetPagamento(\'' + obraId + '\')" class="text-sm text-blue-600 font-semibold">+ Adicionar</button></div>'
+    + '<div class="divide-y divide-slate-50">' + pagRows + '</div></div>'
+    + '<div class="mt-2">'
+    + '<button ' + (podeCont ? 'onclick="emitirContrato(\'' + obra.id + '\')"' : '') + ' class="w-full py-4 rounded-2xl font-bold text-sm flex items-center justify-center gap-2 transition-colors ' + (podeCont ? 'bg-blue-700 hover:bg-blue-800 text-white' : 'bg-slate-100 text-slate-400') + '">'
+    + '<svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>'
+    + 'Gerar Contrato</button>'
+    + (!podeCont ? '<p class="text-xs text-slate-400 text-center mt-2">Faltando: ' + falta.join(', ') + '</p>' : '')
+    + '</div>';
 }
 
-function renderClientes(q=''){
-  const q2=q.toLowerCase();
-  const fil=q2?clientes.filter(c=>c.nome.toLowerCase().includes(q2)||(c.tel||'').includes(q2)):clientes;
-  const list=document.getElementById('list-clientes'),empty=document.getElementById('empty-clientes');
-  if(!fil.length){list.innerHTML='';empty.classList.remove('hidden');return;}
+function openSheetStatus(obraId, cur) {
+  const opts = [{v:'em-andamento',l:'Em andamento',cls:'bg-amber-100 text-amber-800'},{v:'concluida',l:'Concluida',cls:'bg-blue-100 text-blue-800'},{v:'paga',l:'Paga',cls:'bg-green-100 text-green-800'}];
+  let el = document.getElementById('sheet-status-dyn');
+  if (!el) { el = document.createElement('div'); el.id = 'sheet-status-dyn'; document.body.appendChild(el); }
+  el.className = 'fixed bottom-0 inset-x-0 z-40 bg-white rounded-t-3xl p-6 shadow-2xl slide-up';
+  el.innerHTML = '<div class="w-10 h-1 bg-slate-200 rounded-full mx-auto mb-5"></div><h2 class="text-xl font-bold text-slate-800 mb-4">Mudar Status</h2><div class="space-y-3">'
+    + opts.map(o => '<button onclick="col(\'obras\').doc(\'' + obraId + '\').update({status:\'' + o.v + '\'}); closeSheet()" class="w-full flex items-center gap-3 p-4 rounded-2xl border-2 text-left ' + (o.v===cur?'border-blue-500 bg-blue-50':'border-slate-200') + '"><span class="' + o.cls + ' px-3 py-1 rounded-full text-sm font-semibold">' + o.l + '</span>' + (o.v===cur?'<span class="ml-auto text-blue-500 text-sm font-semibold">atual</span>':'') + '</button>').join('')
+    + '</div><button onclick="closeSheet()" class="w-full mt-4 py-3 border border-slate-200 rounded-xl font-semibold text-slate-600">Fechar</button>';
+  show('backdrop'); el.classList.remove('hidden');
+}
+
+function renderClientes(q) {
+  q = q || '';
+  const q2 = q.toLowerCase();
+  const fil = q2 ? clientes.filter(c => c.nome.toLowerCase().includes(q2)||(c.tel||'').includes(q2)) : clientes;
+  const list = document.getElementById('list-clientes'), empty = document.getElementById('empty-clientes');
+  if (!fil.length) { list.innerHTML=''; empty.classList.remove('hidden'); return; }
   empty.classList.add('hidden');
-  list.innerHTML=fil.map(c=>{
-    const n=obras.filter(o=>o.clienteId===c.id).length;
-    return `<div class="bg-white rounded-2xl p-4 shadow-sm border border-slate-100 flex items-center gap-4 cursor-pointer active:scale-[0.98] transition-transform" onclick="openCliDet('${c.id}')">
-      <div class="w-12 h-12 bg-blue-100 rounded-2xl flex items-center justify-center font-bold text-blue-700 flex-shrink-0">${initials(c.nome)}</div>
-      <div class="flex-1 min-w-0"><p class="font-bold text-slate-800">${c.nome}</p><p class="text-sm text-slate-500">${c.cpfrg?'CPF/RG: '+c.cpfrg:(c.tel||'---')}</p></div>
-      <div class="text-right flex-shrink-0"><p class="font-bold text-slate-700">${n}</p><p class="text-xs text-slate-400">${n===1?'obra':'obras'}</p></div>
-    </div>`;
+  list.innerHTML = fil.map(c => {
+    const n = obras.filter(o => o.clienteId === c.id).length;
+    return '<div class="bg-white rounded-2xl p-4 shadow-sm border border-slate-100 flex items-center gap-4 cursor-pointer active:scale-[0.98] transition-transform" onclick="openCliDet(\'' + c.id + '\')">'
+      + '<div class="w-12 h-12 bg-blue-100 rounded-2xl flex items-center justify-center font-bold text-blue-700 flex-shrink-0">' + initials(c.nome) + '</div>'
+      + '<div class="flex-1 min-w-0"><p class="font-bold text-slate-800">' + c.nome + '</p><p class="text-sm text-slate-500">' + (c.cpfrg ? 'CPF/RG: '+c.cpfrg : (c.tel||'---')) + '</p></div>'
+      + '<div class="text-right flex-shrink-0"><p class="font-bold text-slate-700">' + n + '</p><p class="text-xs text-slate-400">' + (n===1?'obra':'obras') + '</p></div>'
+      + '</div>';
   }).join('');
 }
-document.getElementById('search-clientes').addEventListener('input',e=>renderClientes(e.target.value));
+document.getElementById('search-clientes').addEventListener('input', e => renderClientes(e.target.value));
 
-function openCliDet(cliId){
-  const c=clientes.find(x=>x.id===cliId);if(!c)return;
-  const obrasCli=obras.filter(o=>o.clienteId===cliId);
-  document.getElementById('cli-det-content').innerHTML=`
-    <div class="flex items-center gap-4 mb-5">
-      <div class="w-14 h-14 bg-blue-100 rounded-2xl flex items-center justify-center font-bold text-blue-700 text-xl flex-shrink-0">${initials(c.nome)}</div>
-      <div class="min-w-0">
-        <h2 class="text-xl font-bold text-slate-800 leading-tight">${c.nome}</h2>
-        ${c.cpfrg?`<p class="text-slate-500 text-sm">CPF/RG: ${c.cpfrg}</p>`:''}
-        ${c.tel?`<a href="tel:${c.tel}" class="text-blue-600 text-sm">${c.tel}</a>`:''}
-        ${c.end?`<p class="text-slate-500 text-sm mt-0.5 truncate">${c.end}</p>`:''}
-      </div>
-    </div>
-    <div class="flex gap-2 mb-5">
-      <button onclick="openSheetCliente('${cliId}')" class="flex-1 py-2.5 text-sm border border-slate-200 rounded-xl text-slate-600 font-semibold">Editar</button>
-      ${c.tel?`<a href="https://wa.me/55${c.tel.replace(/\D/g,'')}" target="_blank" class="flex-1 py-2.5 text-sm bg-green-500 rounded-xl text-white font-semibold text-center">WhatsApp</a>`:''}
-      <button onclick="confirmDel('cliente','${cliId}')" class="py-2.5 px-3 text-sm text-red-500 border border-red-100 rounded-xl hover:bg-red-50">
-        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/></svg>
-      </button>
-    </div>
-    <h3 class="font-bold text-slate-700 mb-3">Obras (${obrasCli.length})</h3>
-    <div class="space-y-2">
-      ${!obrasCli.length?'<p class="text-sm text-slate-400">Nenhuma obra</p>':obrasCli.map(o=>`
-      <div class="flex items-center justify-between bg-slate-50 rounded-xl px-4 py-3 cursor-pointer" onclick="closeSheet();goTo('obra-det','${o.id}')">
-        <div class="min-w-0 mr-3"><p class="font-semibold text-slate-700 text-sm truncate">${o.descricao}</p><p class="text-xs text-slate-400">${money(o.valorTotal)}</p></div>
-        ${badge(o.status)}
-      </div>`).join('')}
-    </div>`;
+function openCliDet(cliId) {
+  const c = clientes.find(x => x.id === cliId); if (!c) return;
+  const obrasCli = obras.filter(o => o.clienteId === cliId);
+  document.getElementById('cli-det-content').innerHTML =
+    '<div class="flex items-center gap-4 mb-5">'
+    + '<div class="w-14 h-14 bg-blue-100 rounded-2xl flex items-center justify-center font-bold text-blue-700 text-xl flex-shrink-0">' + initials(c.nome) + '</div>'
+    + '<div class="min-w-0"><h2 class="text-xl font-bold text-slate-800 leading-tight">' + c.nome + '</h2>'
+    + (c.cpfrg ? '<p class="text-slate-500 text-sm">CPF/RG: ' + c.cpfrg + '</p>' : '')
+    + (c.tel ? '<a href="tel:' + c.tel + '" class="text-blue-600 text-sm block">' + c.tel + '</a>' : '')
+    + (c.end ? '<p class="text-slate-500 text-sm mt-0.5 truncate">' + c.end + '</p>' : '')
+    + '</div></div>'
+    + '<div class="flex gap-2 mb-5">'
+    + '<button onclick="openSheetCliente(\'' + cliId + '\')" class="flex-1 py-2.5 text-sm border border-slate-200 rounded-xl text-slate-600 font-semibold">Editar</button>'
+    + (c.tel ? '<a href="https://wa.me/55' + c.tel.replace(/\D/g,'') + '" target="_blank" class="flex-1 py-2.5 text-sm bg-green-500 rounded-xl text-white font-semibold text-center">WhatsApp</a>' : '')
+    + '<button onclick="confirmDel(\'cliente\',\'' + cliId + '\')" class="py-2.5 px-3 text-sm text-red-500 border border-red-100 rounded-xl hover:bg-red-50"><svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/></svg></button>'
+    + '</div>'
+    + '<h3 class="font-bold text-slate-700 mb-3">Obras (' + obrasCli.length + ')</h3>'
+    + '<div class="space-y-2">' + (!obrasCli.length ? '<p class="text-sm text-slate-400">Nenhuma obra</p>' : obrasCli.map(o =>
+      '<div class="flex items-center justify-between bg-slate-50 rounded-xl px-4 py-3 cursor-pointer" onclick="closeSheet();goTo(\'obra-det\',\'' + o.id + '\')">'
+      + '<div class="min-w-0 mr-3"><p class="font-semibold text-slate-700 text-sm truncate">' + o.descricao + '</p><p class="text-xs text-slate-400">' + money(o.valorTotal) + '</p></div>'
+      + badge(o.status) + '</div>').join('')) + '</div>';
   openSheet('sheet-cli-det');
 }
 
-function renderReceber(){
-  const todasComSaldo=obras.filter(o=>(o.valorTotal||0)>0).map(o=>{
-    const recebido=pagamentos.filter(p=>p.obraId===o.id&&p.dataPago).reduce((s,p)=>s+p.valor,0);
-    return {...o,recebido,saldo:(o.valorTotal||0)-recebido};
+function renderReceber() {
+  const todas = obras.filter(o=>(o.valorTotal||0)>0).map(o=>{
+    const recebido = pagamentos.filter(p=>p.obraId===o.id&&p.dataPago).reduce((s,p)=>s+p.valor,0);
+    return {...o, recebido, saldo:(o.valorTotal||0)-recebido};
   });
-  const pendentes=todasComSaldo.filter(o=>o.saldo>0.01);
-  document.getElementById('total-receber').textContent=money(pendentes.reduce((s,o)=>s+o.saldo,0));
-  document.getElementById('count-receber').textContent=`${pendentes.length} ${pendentes.length===1?'obra':'obras'}`;
-  document.getElementById('atrasado-receber').textContent=money(pendentes.filter(o=>o.prazo&&isLate(o.prazo)).reduce((s,o)=>s+o.saldo,0));
-  let fil=recFilter==='pendente'?pendentes:recFilter==='pago'?todasComSaldo.filter(o=>o.saldo<=0.01):todasComSaldo;
-  fil.sort((a,b)=>{const aL=a.saldo>0.01&&a.prazo&&isLate(a.prazo),bL=b.saldo>0.01&&b.prazo&&isLate(b.prazo);if(aL&&!bL)return -1;if(!aL&&bL)return 1;return (a.prazo||'zzz')>(b.prazo||'zzz')?1:-1;});
+  const pendentes = todas.filter(o=>o.saldo>0.01);
+  document.getElementById('total-receber').textContent = money(pendentes.reduce((s,o)=>s+o.saldo,0));
+  document.getElementById('count-receber').textContent = pendentes.length + ' ' + (pendentes.length===1?'obra':'obras');
+  document.getElementById('atrasado-receber').textContent = money(pendentes.filter(o=>o.prazo&&isLate(o.prazo)).reduce((s,o)=>s+o.saldo,0));
+  let fil = recFilter==='pendente' ? pendentes : recFilter==='pago' ? todas.filter(o=>o.saldo<=0.01) : todas;
+  fil.sort((a,b)=>{ const aL=a.saldo>0.01&&a.prazo&&isLate(a.prazo),bL=b.saldo>0.01&&b.prazo&&isLate(b.prazo); if(aL&&!bL)return -1; if(!aL&&bL)return 1; return (a.prazo||'zzz')>(b.prazo||'zzz')?1:-1; });
   const list=document.getElementById('list-receber'),empty=document.getElementById('empty-receber');
   if(!fil.length){list.innerHTML='';empty.classList.remove('hidden');return;}
   empty.classList.add('hidden');
-  list.innerHTML=fil.map(o=>{
-    const late=o.saldo>0.01&&o.prazo&&isLate(o.prazo),rec=o.saldo<=0.01;
-    return `<div class="bg-white rounded-2xl p-4 shadow-sm border border-slate-100 ${late?'border-l-4 border-l-red-400':''} cursor-pointer active:scale-[0.98] transition-transform" onclick="goTo('obra-det','${o.id}')">
-      <div class="flex items-start justify-between mb-3">
-        <div class="flex-1 min-w-0 mr-3"><p class="font-bold text-slate-800">${o.descricao}</p><p class="text-sm text-slate-500">${o.clienteNome||'Sem cliente'}</p>${o.prazo?`<p class="text-xs text-slate-400 mt-0.5">${rec?'Concluida':'Prazo'}: ${fmtDate(o.prazo)}</p>`:''}</div>
-        <div class="text-right flex-shrink-0">${rec?'<span class="text-xs font-semibold text-green-700 bg-green-100 px-2.5 py-0.5 rounded-full">Recebido</span>':late?'<span class="text-xs font-semibold text-red-700 bg-red-100 px-2.5 py-0.5 rounded-full">Atrasado</span>':'<span class="text-xs font-semibold text-amber-700 bg-amber-100 px-2.5 py-0.5 rounded-full">Pendente</span>'}</div>
-      </div>
-      <div class="flex justify-between items-center ${!rec?'mb-3':''}">
-        <div><p class="text-xs text-slate-400">Saldo a receber</p><p class="font-bold text-xl ${rec?'text-green-600':'text-slate-800'}">${money(Math.max(0,o.saldo))}</p></div>
-        <div class="text-right"><p class="text-xs text-slate-400">Recebido</p><p class="text-sm font-semibold text-green-600">${money(o.recebido)}</p><p class="text-xs text-slate-400">de ${money(o.valorTotal)}</p></div>
-      </div>
-      ${!rec?`<button onclick="event.stopPropagation();openSheetPagamento('${o.id}')" class="w-full py-2.5 text-sm font-semibold text-blue-700 bg-blue-50 border border-blue-200 rounded-xl hover:bg-blue-100 transition-colors">+ Registrar recebimento</button>`:''}
-    </div>`;
+  list.innerHTML = fil.map(o=>{
+    const late=o.saldo>0.01&&o.prazo&&isLate(o.prazo), recebida=o.saldo<=0.01;
+    return '<div class="bg-white rounded-2xl p-4 shadow-sm border border-slate-100 ' + (late?'border-l-4 border-l-red-400':'') + ' cursor-pointer active:scale-[0.98] transition-transform" onclick="goTo(\'obra-det\',\'' + o.id + '\')">'
+      + '<div class="flex items-start justify-between mb-3"><div class="flex-1 min-w-0 mr-3"><p class="font-bold text-slate-800">' + o.descricao + '</p><p class="text-sm text-slate-500">' + (o.clienteNome||'Sem cliente') + '</p>' + (o.prazo?'<p class="text-xs text-slate-400 mt-0.5">'+(recebida?'Concluida':'Prazo')+': '+fmtDate(o.prazo)+'</p>':'') + '</div>'
+      + '<div class="text-right flex-shrink-0">' + (recebida?'<span class="text-xs font-semibold text-green-700 bg-green-100 px-2.5 py-0.5 rounded-full">Recebido</span>':late?'<span class="text-xs font-semibold text-red-700 bg-red-100 px-2.5 py-0.5 rounded-full">Atrasado</span>':'<span class="text-xs font-semibold text-amber-700 bg-amber-100 px-2.5 py-0.5 rounded-full">Pendente</span>') + '</div></div>'
+      + '<div class="flex justify-between items-center ' + (!recebida?'mb-3':'') + '"><div><p class="text-xs text-slate-400">Saldo a receber</p><p class="font-bold text-xl ' + (recebida?'text-green-600':'text-slate-800') + '">' + money(Math.max(0,o.saldo)) + '</p></div><div class="text-right"><p class="text-xs text-slate-400">Recebido</p><p class="text-sm font-semibold text-green-600">' + money(o.recebido) + '</p><p class="text-xs text-slate-400">de ' + money(o.valorTotal) + '</p></div></div>'
+      + (!recebida?'<button onclick="event.stopPropagation();openSheetPagamento(\'' + o.id + '\')" class="w-full py-2.5 text-sm font-semibold text-blue-700 bg-blue-50 border border-blue-200 rounded-xl hover:bg-blue-100 transition-colors">+ Registrar recebimento</button>':'')
+      + '</div>';
   }).join('');
 }
-document.querySelectorAll('.rf-btn').forEach(b=>b.addEventListener('click',()=>{
-  recFilter=b.dataset.rf;
-  document.querySelectorAll('.rf-btn').forEach(x=>{x.classList.toggle('bg-blue-600',x===b);x.classList.toggle('text-white',x===b);x.classList.toggle('bg-white',x!==b);x.classList.toggle('text-slate-600',x!==b);x.classList.toggle('border',x!==b);x.classList.toggle('border-slate-200',x!==b);});
+document.querySelectorAll('.rf-btn').forEach(b => b.addEventListener('click', () => {
+  recFilter = b.dataset.rf;
+  document.querySelectorAll('.rf-btn').forEach(x => {
+    x.classList.toggle('bg-blue-600',x===b); x.classList.toggle('text-white',x===b);
+    x.classList.toggle('bg-white',x!==b); x.classList.toggle('text-slate-600',x!==b);
+    x.classList.toggle('border',x!==b); x.classList.toggle('border-slate-200',x!==b);
+  });
   renderReceber();
 }));
 
-function renderCompras(){
-  const pend=materiais.filter(m=>!m.comprado);
+function renderCompras() {
+  const pend = materiais.filter(m=>!m.comprado);
   const list=document.getElementById('list-compras'),empty=document.getElementById('empty-compras');
   if(!pend.length){list.innerHTML='';empty.classList.remove('hidden');return;}
   empty.classList.add('hidden');
   const byObra={};
   pend.forEach(m=>{const k=m.obraId||'avulso',ref=m.obraId?obras.find(o=>o.id===m.obraId):null;if(!byObra[k])byObra[k]={desc:ref?.descricao||m.obraDesc||'Avulso',items:[]};byObra[k].items.push(m);});
-  list.innerHTML=Object.entries(byObra).map(([oid,g])=>`
-    <div class="bg-white rounded-2xl shadow-sm border border-slate-100">
-      <div class="px-4 py-3 border-b border-slate-100 ${oid!=='avulso'?'cursor-pointer':''}" ${oid!=='avulso'?`onclick="goTo('obra-det','${oid}')"`:''}><p class="font-bold text-slate-700 text-sm">${g.desc}</p><p class="text-xs text-slate-400">${g.items.length} ${g.items.length===1?'item':'itens'}</p></div>
-      <div class="divide-y divide-slate-50">${g.items.map(m=>`<div class="flex items-center gap-3 px-4 py-3"><button onclick="toggleMat('${m.id}',false)" class="w-6 h-6 rounded-full border-2 border-slate-300 flex-shrink-0 hover:border-green-400 hover:bg-green-50 transition-colors"></button><div class="flex-1 min-w-0"><p class="text-sm font-medium text-slate-700">${m.descricao}</p><p class="text-xs text-slate-400">${[m.qtd?(m.qtd+(m.un?' '+m.un:'')):null,m.cor?'Cor: '+m.cor:null].filter(Boolean).join(' - ')||'---'}</p></div></div>`).join('')}</div>
-    </div>`).join('');
+  list.innerHTML=Object.entries(byObra).map(([oid,g])=>
+    '<div class="bg-white rounded-2xl shadow-sm border border-slate-100">'
+    + '<div class="px-4 py-3 border-b border-slate-100 ' + (oid!=='avulso'?'cursor-pointer':'') + '" ' + (oid!=='avulso'?'onclick="goTo(\'obra-det\',\''+oid+'\')"':'') + '><p class="font-bold text-slate-700 text-sm">'+g.desc+'</p><p class="text-xs text-slate-400">'+g.items.length+' '+(g.items.length===1?'item':'itens')+'</p></div>'
+    + '<div class="divide-y divide-slate-50">' + g.items.map(m=>
+      '<div class="flex items-center gap-3 px-4 py-3"><button onclick="toggleMat(\'' + m.id + '\',false)" class="w-6 h-6 rounded-full border-2 border-slate-300 flex-shrink-0 hover:border-green-400 hover:bg-green-50 transition-colors"></button>'
+      + '<div class="flex-1 min-w-0"><p class="text-sm font-medium text-slate-700">'+m.descricao+'</p><p class="text-xs text-slate-400">'+([m.qtd?(m.qtd+(m.un?' '+m.un:'')):null,m.cor?'Cor: '+m.cor:null].filter(Boolean).join(' . ')||'')+'</p></div></div>'
+    ).join('') + '</div></div>'
+  ).join('');
 }
 
-function openSheetObra(obraId){
-  const o=obraId?obras.find(x=>x.id===obraId):null;
-  document.getElementById('sheet-obra-title').textContent=o?'Editar Obra':'Nova Obra';
-  document.getElementById('f-obra-id').value=o?.id||'';
-  document.getElementById('f-obra-desc').value=o?.descricao||'';
-  document.getElementById('f-obra-valor').value=o?.valorTotal||'';
-  document.getElementById('f-obra-prazo').value=o?.prazo||'';
-  document.getElementById('f-obra-formapag').value=o?.formaPag||'';
-  document.getElementById('f-obra-servico').value=o?.servico||'';
-  const cliSel=document.getElementById('f-obra-cliente');
-  cliSel.innerHTML='<option value="">-- selecionar cliente --</option>'+clientes.map(c=>`<option value="${c.id}" ${o?.clienteId===c.id?'selected':''}>${c.nome}</option>`).join('');
-  const stSel=document.getElementById('f-obra-status');
-  [{v:'em-andamento',l:'Em andamento'},{v:'concluida',l:'Concluida'},{v:'paga',l:'Paga'}].forEach(s=>{
-    stSel.querySelectorAll('button').forEach(b=>{if(b.dataset.val===s.v){b.classList.toggle('ring-2',o?.status===s.v||(!o&&s.v==='em-andamento'));b.classList.toggle('ring-blue-500',o?.status===s.v||(!o&&s.v==='em-andamento'));}});
-  });
-  if(!o){const first=stSel.querySelector('button[data-val="em-andamento"]');if(first){first.click();}}
+function openSheetObra(editId) {
+  editId = editId || null;
+  document.getElementById('sheet-obra-title').textContent = editId ? 'Editar Obra' : 'Nova Obra';
+  document.getElementById('form-obra').reset();
+  document.getElementById('f-obra-id').value = editId || '';
+  const sel = document.getElementById('f-obra-cliente');
+  sel.innerHTML = '<option value="">Selecionar cliente</option>' + clientes.map(c=>'<option value="'+c.id+'">' + c.nome + '</option>').join('');
+  if (editId) {
+    const o = obras.find(x=>x.id===editId);
+    if (o) {
+      sel.value = o.clienteId || '';
+      document.getElementById('f-obra-desc').value = o.descricao || '';
+      document.getElementById('f-obra-valor').value = o.valorTotal || '';
+      document.getElementById('f-obra-formapag').value = o.formaPag || '';
+      document.getElementById('f-obra-status').value = o.status || 'em-andamento';
+      document.getElementById('f-obra-prazo').value = o.prazo || '';
+      document.getElementById('f-obra-servico').value = o.servico || '';
+      document.getElementById('f-obra-obs').value = o.observacoes || '';
+    }
+  }
   openSheet('sheet-obra');
 }
 
-function openSheetCliente(cliId){
-  const c=cliId?clientes.find(x=>x.id===cliId):null;
-  document.getElementById('sheet-cliente-title').textContent=c?'Editar Cliente':'Novo Cliente';
-  document.getElementById('f-cli-id').value=c?.id||'';
-  document.getElementById('f-cli-nome').value=c?.nome||'';
-  document.getElementById('f-cli-cpfrg').value=c?.cpfrg||'';
-  document.getElementById('f-cli-tel').value=c?.tel||'';
-  document.getElementById('f-cli-end').value=c?.end||'';
+function openSheetCliente(editId) {
+  editId = editId || null;
+  document.getElementById('sheet-cliente-title').textContent = editId ? 'Editar Cliente' : 'Novo Cliente';
+  document.getElementById('form-cliente').reset();
+  document.getElementById('f-cli-id').value = editId || '';
+  if (editId) {
+    const c = clientes.find(x=>x.id===editId);
+    if (c) {
+      document.getElementById('f-cli-nome').value = c.nome || '';
+      document.getElementById('f-cli-cpfrg').value = c.cpfrg || '';
+      document.getElementById('f-cli-tel').value = c.tel || '';
+      document.getElementById('f-cli-end').value = c.end || '';
+    }
+  }
+  closeSheet();
   openSheet('sheet-cliente');
 }
 
-function openSheetPagamento(obraId){
-  document.getElementById('f-pag-obra-id').value=obraId;
-  document.getElementById('f-pag-val').value='';
-  document.getElementById('f-pag-desc').value='';
-  document.getElementById('f-pag-data').value=new Date().toISOString().split('T')[0];
+function openSheetMaterial(obraId) {
+  document.getElementById('form-material').reset();
+  document.getElementById('f-mat-obra-id').value = obraId;
+  openSheet('sheet-material');
+}
+
+function openSheetPagamento(obraId) {
+  document.getElementById('form-pagamento').reset();
+  document.getElementById('f-pag-obra-id').value = obraId || '';
+  document.getElementById('f-pag-venc').value = todayStr();
   openSheet('sheet-pagamento');
 }
 
-document.getElementById('form-obra').addEventListener('submit',async function(e){
+document.getElementById('form-obra').addEventListener('submit', async function(e) {
   e.preventDefault();
-  const id=document.getElementById('f-obra-id').value;
-  const cliId=document.getElementById('f-obra-cliente').value;
-  const cliRef=cliId?clientes.find(c=>c.id===cliId):null;
-  const stBtn=null; // status is a <select>
-  const data={
-    descricao:document.getElementById('f-obra-desc').value.trim(),
-    valorTotal:parseFloat(document.getElementById('f-obra-valor').value)||0,
-    prazo:document.getElementById('f-obra-prazo').value,
-    formaPag:document.getElementById('f-obra-formapag').value.trim(),
-    servico:document.getElementById('f-obra-servico').value.trim(),
-    clienteId:cliId||null,
-    clienteNome:cliRef?.nome||null,
-    status:document.getElementById('f-obra-status').value||'em-andamento',
-    updatedAt:firebase.firestore.FieldValue.serverTimestamp()
+  const editId = document.getElementById('f-obra-id').value;
+  const cliId = document.getElementById('f-obra-cliente').value;
+  const cliNome = cliId ? (clientes.find(c=>c.id===cliId)?.nome||'') : '';
+  const data = {
+    clienteId: cliId || null,
+    clienteNome: cliNome,
+    descricao: document.getElementById('f-obra-desc').value.trim(),
+    valorTotal: parseFloat(document.getElementById('f-obra-valor').value) || 0,
+    formaPag: document.getElementById('f-obra-formapag').value.trim() || null,
+    status: document.getElementById('f-obra-status').value,
+    prazo: document.getElementById('f-obra-prazo').value || null,
+    servico: document.getElementById('f-obra-servico').value.trim() || null,
+    observacoes: document.getElementById('f-obra-obs').value.trim() || null,
   };
-  if(!data.descricao)return alert('Informe o nome/descricao da obra');
-  const btn=this.querySelector('button[type=submit]');btn.disabled=true;btn.textContent='Salvando...';
-  try{
-    if(id){await col('obras').doc(id).update(data);}
-    else{data.createdAt=firebase.firestore.FieldValue.serverTimestamp();await col('obras').add(data);}
+  if (!data.descricao) return alert('Informe a descricao da obra.');
+  const btn = e.target.querySelector('button[type=submit]'); btn.disabled=true; btn.textContent='Salvando...';
+  try {
+    if (editId) await col('obras').doc(editId).update(data);
+    else await col('obras').add({ ...data, ts: firebase.firestore.FieldValue.serverTimestamp() });
     closeSheet();
-  }catch(er){alert('Erro: '+er.message);}
-  finally{btn.disabled=false;btn.textContent='Salvar';}
+  } catch(err) { alert('Erro ao salvar: ' + err.message); }
+  finally { btn.disabled=false; btn.textContent='Salvar'; }
 });
 
-document.getElementById('form-cliente').addEventListener('submit',async function(e){
+document.getElementById('form-cliente').addEventListener('submit', async function(e) {
   e.preventDefault();
-  const id=document.getElementById('f-cli-id').value;
-  const data={
-    nome:document.getElementById('f-cli-nome').value.trim(),
-    cpfrg:document.getElementById('f-cli-cpfrg').value.trim(),
-    tel:document.getElementById('f-cli-tel').value.trim(),
-    end:document.getElementById('f-cli-end').value.trim(),
-    updatedAt:firebase.firestore.FieldValue.serverTimestamp()
+  const editId = document.getElementById('f-cli-id').value;
+  const data = {
+    nome: document.getElementById('f-cli-nome').value.trim(),
+    cpfrg: document.getElementById('f-cli-cpfrg').value.trim() || null,
+    tel: document.getElementById('f-cli-tel').value.trim() || null,
+    end: document.getElementById('f-cli-end').value.trim() || null,
   };
-  if(!data.nome)return alert('Informe o nome do cliente');
-  const btn=this.querySelector('button[type=submit]');btn.disabled=true;btn.textContent='Salvando...';
-  try{
-    if(id){await col('clientes').doc(id).update(data);}
-    else{data.createdAt=firebase.firestore.FieldValue.serverTimestamp();await col('clientes').add(data);}
+  if (!data.nome) return alert('Informe o nome do cliente.');
+  const btn = e.target.querySelector('button[type=submit]'); btn.disabled=true; btn.textContent='Salvando...';
+  try {
+    if (editId) {
+      await col('clientes').doc(editId).update(data);
+      for (const o of obras.filter(x=>x.clienteId===editId)) await col('obras').doc(o.id).update({ clienteNome: data.nome });
+    } else {
+      await col('clientes').add({ ...data, ts: firebase.firestore.FieldValue.serverTimestamp() });
+    }
     closeSheet();
-  }catch(er){alert('Erro: '+er.message);}
-  finally{btn.disabled=false;btn.textContent='Salvar';}
+  } catch(err) { alert('Erro ao salvar: ' + err.message); }
+  finally { btn.disabled=false; btn.textContent='Salvar'; }
 });
 
-document.getElementById('form-material').addEventListener('submit',async function(e){
+document.getElementById('form-material').addEventListener('submit', async function(e) {
   e.preventDefault();
-  const obraId=document.getElementById('f-mat-obra-id').value;
-  const obra=obras.find(o=>o.id===obraId);
-  const data={
-    obraId,obraDesc:obra?.descricao||'',
-    descricao:document.getElementById('f-mat-desc').value.trim(),
-    qtd:document.getElementById('f-mat-qtd').value.trim(),
-    un:document.getElementById('f-mat-un').value.trim(),
-    cor:document.getElementById('f-mat-cor').value.trim(),
-    comprado:false,
-    createdAt:firebase.firestore.FieldValue.serverTimestamp()
+  const obraId = document.getElementById('f-mat-obra-id').value;
+  const obra = obras.find(o=>o.id===obraId);
+  const data = {
+    obraId, obraDesc: obra?.descricao||'',
+    descricao: document.getElementById('f-mat-desc').value.trim(),
+    qtd: document.getElementById('f-mat-qtd').value.trim() || null,
+    un: document.getElementById('f-mat-un').value.trim() || null,
+    cor: document.getElementById('f-mat-cor').value.trim() || null,
+    comprado: false, ts: firebase.firestore.FieldValue.serverTimestamp()
   };
-  if(!data.descricao)return alert('Informe o material');
-  const btn=this.querySelector('button[type=submit]');btn.disabled=true;btn.textContent='Salvando...';
-  try{await col('materiais').add(data);closeSheet();}
-  catch(er){alert('Erro: '+er.message);}
-  finally{btn.disabled=false;btn.textContent='Salvar';}
+  if (!data.descricao) return alert('Informe o material.');
+  await col('materiais').add(data); closeSheet();
 });
 
-document.getElementById('form-pagamento').addEventListener('submit',async function(e){
+document.getElementById('form-pagamento').addEventListener('submit', async function(e) {
   e.preventDefault();
-  const obraId=document.getElementById('f-pag-obra-id').value;
-  const data={
-    obraId,
-    valor:parseFloat(document.getElementById('f-pag-val').value)||0,
-    descricao:document.getElementById('f-pag-desc').value.trim(),
-    dataPago:document.getElementById('f-pag-data').value,
-    createdAt:firebase.firestore.FieldValue.serverTimestamp()
+  const obraId = document.getElementById('f-pag-obra-id').value;
+  const obra = obraId ? obras.find(o=>o.id===obraId) : null;
+  const data = {
+    obraId: obraId||null, obraDesc: obra?.descricao||'', cliNome: obra?.clienteNome||'',
+    valor: parseFloat(document.getElementById('f-pag-valor').value) || 0,
+    venc: document.getElementById('f-pag-venc').value || null,
+    dataPago: document.getElementById('f-pag-rec').value || null,
+    obs: document.getElementById('f-pag-obs').value.trim() || null,
+    ts: firebase.firestore.FieldValue.serverTimestamp()
   };
-  if(!data.valor)return alert('Informe o valor');
-  const btn=this.querySelector('button[type=submit]');btn.disabled=true;btn.textContent='Salvando...';
-  try{await col('pagamentos').add(data);closeSheet();}
-  catch(er){alert('Erro: '+er.message);}
-  finally{btn.disabled=false;btn.textContent='Salvar';}
+  if (!data.valor) return alert('Informe o valor.');
+  await col('pagamentos').add(data); closeSheet();
 });
 
-async function toggleMat(matId,val){await col('materiais').doc(matId).update({comprado:val});}
-async function delMat(matId){await col('materiais').doc(matId).delete();}
-async function togglePag(pagId){const p=pagamentos.find(x=>x.id===pagId);if(p)await col('pagamentos').doc(pagId).update({dataPago:p.dataPago?null:new Date().toISOString().split('T')[0]});}
-async function delPag(pagId){await col('pagamentos').doc(pagId).delete();}
+async function toggleMat(id, cur) { await col('materiais').doc(id).update({ comprado: !cur }); }
+async function delMat(id)         { await col('materiais').doc(id).delete(); }
+async function togglePag(id, cur) { await col('pagamentos').doc(id).update({ dataPago: cur ? null : todayStr() }); }
+async function delPag(id)         { await col('pagamentos').doc(id).delete(); }
 
-function confirmDel(tipo,id){
-  const labels={obra:'esta obra',cliente:'este cliente',material:'este material',pagamento:'este pagamento'};
-  document.getElementById('confirm-del-msg').textContent=`Deseja excluir ${labels[tipo]||tipo}? Esta acao nao pode ser desfeita.`;
-  document.getElementById('confirm-del-btn').onclick=async()=>{
-    try{await col(tipo==='obra'?'obras':tipo==='cliente'?'clientes':tipo==='material'?'materiais':'pagamentos').doc(id).delete();}
-    catch(er){alert('Erro ao excluir: '+er.message);}
-    closeSheet();
-    if(tipo==='obra'||tipo==='cliente'){goTo(tipo==='obra'?'obras':'clientes');}
+function confirmDel(type, id) {
+  const msgs = { obra: 'Excluir esta obra? Os materiais e pagamentos vinculados tambem serao removidos.', cliente: 'Excluir este cliente?' };
+  document.getElementById('confirm-msg').textContent = msgs[type]||'Excluir?';
+  document.getElementById('confirm-ok').onclick = async () => {
+    if (type==='obra') {
+      const b = db.batch();
+      b.delete(col('obras').doc(id));
+      const [ms,ps] = await Promise.all([col('materiais').where('obraId','==',id).get(), col('pagamentos').where('obraId','==',id).get()]);
+      ms.forEach(d=>b.delete(d.ref)); ps.forEach(d=>b.delete(d.ref));
+      await b.commit(); closeSheet(); goTo('obras');
+    } else if (type==='cliente') { await col('clientes').doc(id).delete(); closeSheet(); }
   };
   openSheet('sheet-confirm');
 }
 
-function valorPorExtenso(v){
-  if(!v||isNaN(v))return'valor nao informado';
-  const n=Math.round(v*100);const reais=Math.floor(n/100);const cents=n%100;
-  const u=['','um','dois','tres','quatro','cinco','seis','sete','oito','nove','dez','onze','doze','treze','quatorze','quinze','dezesseis','dezessete','dezoito','dezenove'];
-  const d=['','','vinte','trinta','quarenta','cinquenta','sessenta','setenta','oitenta','noventa'];
-  const c=['','cem','duzentos','trezentos','quatrocentos','quinhentos','seiscentos','setecentos','oitocentos','novecentos'];
-  function grupo3(n,plural){
-    if(!n)return'';let t='';
-    const mil=Math.floor(n/1000),resto=n%1000;
-    const cent=Math.floor(resto/100),dez=Math.floor((resto%100)/10),uni=resto%10;
-    if(mil){t+=grupo3(mil,'')+(mil===1?' mil':' mil')+' ';}
-    if(cent===1&&!dez&&!uni)t+='cem';
-    else{if(cent)t+=c[cent];if(cent&&(dez||uni))t+=' e ';if(dez>=2){t+=d[dez];if(uni)t+=' e '+u[uni];}else if(dez===1)t+=u[10+uni];else if(uni)t+=u[uni];}
+function valorPorExtenso(v) {
+  if (!v || isNaN(v)) return 'valor nao informado';
+  const n = Math.round(v * 100), reais = Math.floor(n / 100), cents = n % 100;
+  const u = ['','um','dois','tres','quatro','cinco','seis','sete','oito','nove','dez','onze','doze','treze','quatorze','quinze','dezesseis','dezessete','dezoito','dezenove'];
+  const d = ['','','vinte','trinta','quarenta','cinquenta','sessenta','setenta','oitenta','noventa'];
+  const c = ['','cem','duzentos','trezentos','quatrocentos','quinhentos','seiscentos','setecentos','oitocentos','novecentos'];
+  function g3(n) {
+    if (!n) return '';
+    let t = '';
+    const mil=Math.floor(n/1000), r=n%1000, ct=Math.floor(r/100), dz=Math.floor((r%100)/10), un=r%10;
+    if (mil) t += (mil===1 ? 'um mil' : g3(mil)+' mil') + ' ';
+    if (ct===1&&!dz&&!un) t += 'cem';
+    else { if(ct) t+=c[ct]; if(ct&&(dz||un)) t+=' e '; if(dz>=2){t+=d[dz];if(un)t+=' e '+u[un];}else if(dz===1)t+=u[10+un];else if(un)t+=u[un]; }
     return t.trim();
   }
-  let res=grupo3(reais,'')+(reais===1?' real':' reais');
-  if(cents)res+=' e '+grupo3(cents,'')+(cents===1?' centavo':' centavos');
+  let res = g3(reais) + (reais===1?' real':' reais');
+  if (cents) res += ' e ' + g3(cents) + (cents===1?' centavo':' centavos');
   return res;
 }
 
-function emitirContrato(obraId){
-  const obra=obras.find(o=>o.id===obraId);
-  if(!obra)return alert('Obra nao encontrada');
-  const cliente=clientes.find(c=>c.id===obra.clienteId);
-  if(!cliente)return alert('Associe um cliente a esta obra antes de emitir o contrato');
-  const falta=[];
-  if(!cliente.cpfrg)falta.push('CPF/RG do cliente');
-  if(!cliente.end)falta.push('Endereco do cliente');
-  if(!obra.valorTotal)falta.push('Valor do servico');
-  if(!obra.formaPag)falta.push('Forma de pagamento');
-  if(!obra.prazo)falta.push('Prazo de entrega');
-  if(falta.length)return alert('Preencha antes de emitir:\n- '+falta.join('\n- '));
-  const hoje=new Date().toLocaleDateString('pt-BR',{day:'2-digit',month:'long',year:'numeric'});
-  const prazoFmt=fmtDate(obra.prazo);
-  const valorExt=valorPorExtenso(obra.valorTotal);
-  const html=`<!DOCTYPE html><html lang="pt-BR"><head><meta charset="UTF-8">
-<title>Contrato - ${obra.descricao}</title>
-<style>
-  *{box-sizing:border-box}body{font-family:'Times New Roman',serif;font-size:12pt;line-height:1.6;max-width:800px;margin:0 auto;padding:40px;}
-  h1{text-align:center;font-size:16pt;text-transform:uppercase;margin-bottom:4px}
-  .sub{text-align:center;font-size:10pt;color:#666;margin-bottom:30px}
-  h2{font-size:12pt;font-weight:bold;text-transform:uppercase;margin:20px 0 6px}
-  p{margin:6px 0;text-align:justify}
-  .assin{display:flex;gap:60px;margin-top:60px;flex-wrap:wrap}
-  .assin-item{flex:1;min-width:200px;text-align:center;border-top:1px solid #000;padding-top:6px}
-  @media print{body{padding:20px}.no-print{display:none}}
-</style></head><body>
-<button class="no-print" onclick="window.print()" style="position:fixed;top:20px;right:20px;padding:10px 24px;background:#1d4ed8;color:#fff;border:none;border-radius:8px;font-size:14px;cursor:pointer;font-weight:600">Imprimir / Salvar PDF</button>
-<h1>Contrato de Prestacao de Servicos</h1>
-<p class="sub">Bela Art</p>
-<h2>1. Das Partes</h2>
-<p><strong>Contratada:</strong> Bela Art, prestadora de servicos.</p>
-<p><strong>Contratante:</strong> ${cliente.nome}, portador do CPF/RG n.o ${cliente.cpfrg}, residente em ${cliente.end}.</p>
-<h2>2. Do Objeto</h2>
-<p>O presente contrato tem por objeto a prestacao dos seguintes servicos: ${obra.servico||obra.descricao}.</p>
-${obra.endereco?`<p><strong>Local de execucao:</strong> ${obra.endereco}</p>`:''}
-<h2>3. Do Valor e da Forma de Pagamento</h2>
-<p>O valor total dos servicos e de <strong>R$ ${obra.valorTotal.toLocaleString('pt-BR',{minimumFractionDigits:2})} (${valorExt})</strong>.</p>
-<p><strong>Forma de pagamento:</strong> ${obra.formaPag}.</p>
-<h2>4. Do Prazo</h2>
-<p>Os servicos serao concluidos ate <strong>${prazoFmt}</strong>, salvo casos de forca maior ou alteracoes solicitadas pelo Contratante.</p>
-<h2>5. Das Obrigacoes da Contratada</h2>
-<p>a) Executar os servicos conforme descrito neste contrato, com qualidade e nos prazos acordados.</p>
-<p>b) Utilizar materiais e tecnicas adequadas para a realizacao dos servicos.</p>
-<p>c) Manter o Contratante informado sobre o andamento dos servicos.</p>
-<h2>6. Das Obrigacoes do Contratante</h2>
-<p>a) Efetuar o pagamento nos termos e prazos estipulados neste contrato.</p>
-<p>b) Fornecer acesso ao local e condicoes necessarias para a execucao dos servicos.</p>
-<h2>7. Da Rescisao</h2>
-<p>Este contrato podera ser rescindido por qualquer das partes mediante aviso previo de 5 (cinco) dias uteis. Em caso de rescisao, os valores referentes aos servicos ja executados serao devidos ao Contratado.</p>
-<h2>8. Do Foro</h2>
-<p>As partes elegem o foro da comarca competente para dirimir quaisquer controversias decorrentes deste contrato.</p>
-<p style="margin-top:30px">Por estarem assim justos e contratados, assinam o presente instrumento em duas vias de igual teor e forma.</p>
-<p style="text-align:right;margin-top:10px">${hoje}</p>
-<div class="assin">
-  <div class="assin-item"><p><strong>Contratada</strong></p><p>Bela Art</p></div>
-  <div class="assin-item"><p><strong>Contratante</strong></p><p>${cliente.nome}</p></div>
-</div>
-</body></html>`;
-  const w=window.open('','_blank');
-  if(!w){alert('Permita pop-ups para gerar o contrato');return;}
-  w.document.write(html);w.document.close();
+function emitirContrato(obraId) {
+  const obra = obras.find(o=>o.id===obraId);
+  if (!obra) return alert('Obra nao encontrada');
+  const cliente = clientes.find(c=>c.id===obra.clienteId);
+  if (!cliente) return alert('Associe um cliente a esta obra antes de gerar o contrato');
+  const falta = [];
+  if (!cliente.cpfrg) falta.push('CPF/RG do cliente');
+  if (!cliente.end) falta.push('Endereco do cliente');
+  if (!obra.valorTotal) falta.push('Valor do servico');
+  if (!obra.formaPag) falta.push('Forma de pagamento');
+  if (!obra.prazo) falta.push('Prazo de entrega');
+  if (falta.length) return alert('Preencha antes de gerar o contrato:\n- ' + falta.join('\n- '));
+
+  const hoje = new Date().toLocaleDateString('pt-BR', {day:'2-digit',month:'long',year:'numeric'});
+  const valorFmt = 'R$ ' + obra.valorTotal.toLocaleString('pt-BR',{minimumFractionDigits:2}) + ' (' + valorPorExtenso(obra.valorTotal) + ')';
+  const servicoDesc = obra.servico || obra.descricao;
+
+  const html = '<!DOCTYPE html><html lang="pt-BR"><head><meta charset="UTF-8"><title>Contrato - ' + obra.descricao + '</title>'
+    + '<style>'
+    + 'body{font-family:"Times New Roman",serif;font-size:12pt;line-height:1.7;max-width:780px;margin:40px auto;padding:0 40px;color:#111}'
+    + 'h1{text-align:center;font-size:15pt;text-transform:uppercase;letter-spacing:1px;margin-bottom:4px}'
+    + '.sub{text-align:center;font-size:10pt;color:#555;margin-bottom:2px}'
+    + '.linha{border-top:1px solid #333;margin:18px 0}'
+    + 'h2{font-size:11pt;font-weight:bold;text-transform:uppercase;margin:18px 0 6px}'
+    + 'p{margin:5px 0;text-align:justify}'
+    + '.assin{display:flex;gap:60px;margin-top:70px;flex-wrap:wrap}'
+    + '.assin-bloco{flex:1;min-width:200px;text-align:center}'
+    + '.assin-linha{border-top:1px solid #333;padding-top:8px;margin-top:50px}'
+    + '.rodape{margin-top:50px;font-size:9pt;color:#777;text-align:center;border-top:1px solid #ccc;padding-top:10px}'
+    + '.btn-imp{position:fixed;top:20px;right:20px;padding:10px 22px;background:#1d4ed8;color:#fff;border:none;border-radius:8px;font-size:13px;cursor:pointer;font-weight:600;font-family:sans-serif}'
+    + '@media print{.btn-imp{display:none}body{margin:20px;padding:0 20px}}'
+    + '</style></head><body>'
+    + '<button class="btn-imp" onclick="window.print()">Imprimir / Salvar PDF</button>'
+    + '<h1>Contrato de Prestacao de Servicos</h1>'
+    + '<p class="sub"><strong>Bela Art</strong> — Solucoes em Aluminio e Vidro</p>'
+    + '<div class="linha"></div>'
+    + '<h2>1. Das Partes</h2>'
+    + '<p><strong>CONTRATADA:</strong> Bela Art, prestadora de servicos de aluminio e vidro.</p>'
+    + '<p><strong>CONTRATANTE:</strong> ' + cliente.nome + ', portador do CPF/RG n.o ' + cliente.cpfrg + ', residente em ' + cliente.end + '.</p>'
+    + '<h2>2. Do Objeto</h2>'
+    + '<p>O presente contrato tem por objeto a prestacao dos seguintes servicos: <strong>' + servicoDesc + '</strong>.</p>'
+    + (obra.observacoes ? '<p>Observacoes: ' + obra.observacoes + '</p>' : '')
+    + '<h2>3. Do Valor e da Forma de Pagamento</h2>'
+    + '<p>O valor total pelos servicos e de <strong>' + valorFmt + '</strong>.</p>'
+    + '<p><strong>Forma de pagamento:</strong> ' + obra.formaPag + '.</p>'
+    + '<h2>4. Do Prazo</h2>'
+    + '<p>Os servicos serao executados e entregues ate o dia <strong>' + fmtDate(obra.prazo) + '</strong>, salvo casos de forca maior, atraso no fornecimento de materiais ou alteracoes solicitadas pelo Contratante.</p>'
+    + '<h2>5. Das Obrigacoes da Contratada</h2>'
+    + '<p>a) Executar os servicos conforme descrito neste contrato, com qualidade e no prazo acordado.</p>'
+    + '<p>b) Utilizar materiais adequados e mao de obra qualificada.</p>'
+    + '<p>c) Manter o Contratante informado sobre o andamento dos servicos.</p>'
+    + '<h2>6. Das Obrigacoes do Contratante</h2>'
+    + '<p>a) Efetuar o pagamento nas condicoes e prazos estipulados.</p>'
+    + '<p>b) Fornecer acesso ao local e as condicoes necessarias para a execucao dos servicos.</p>'
+    + '<p>c) Nao realizar modificacoes no objeto do contrato sem autorizacao previa da Contratada.</p>'
+    + '<h2>7. Da Garantia</h2>'
+    + '<p>Os servicos executados terao garantia de <strong>90 (noventa) dias</strong> contra defeitos de instalacao, a contar da data de entrega.</p>'
+    + '<h2>8. Da Rescisao</h2>'
+    + '<p>Este contrato podera ser rescindido por qualquer das partes mediante aviso previo de 5 (cinco) dias uteis. Em caso de rescisao por parte do Contratante apos o inicio dos servicos, serao devidos os valores proporcionais ao trabalho ja realizado.</p>'
+    + '<h2>9. Do Foro</h2>'
+    + '<p>As partes elegem o foro da comarca de sua localidade para dirimir quaisquer controversias decorrentes deste contrato, com renuncia expressa a qualquer outro, por mais privilegiado que seja.</p>'
+    + '<p style="margin-top:28px">Por estarem de acordo com todos os termos acima, as partes assinam o presente instrumento em duas vias de igual teor e forma.</p>'
+    + '<p style="text-align:right;margin-top:8px">' + hoje + '</p>'
+    + '<div class="assin">'
+    + '<div class="assin-bloco"><div class="assin-linha"><p><strong>Contratada</strong></p><p>Bela Art</p></div></div>'
+    + '<div class="assin-bloco"><div class="assin-linha"><p><strong>Contratante</strong></p><p>' + cliente.nome + '</p></div></div>'
+    + '</div>'
+    + '<p class="rodape">Contrato gerado pelo sistema Bela Art em ' + hoje + '</p>'
+    + '</body></html>';
+
+  const w = window.open('', '_blank');
+  if (!w) { alert('Permita pop-ups para gerar o contrato. No celular, use o Chrome.'); return; }
+  w.document.write(html);
+  w.document.close();
 }
-
-// Status buttons toggle
-document.querySelectorAll('#f-obra-status button').forEach(b=>{
-  b.addEventListener('click',()=>{
-    document.querySelectorAll('#f-obra-status button').forEach(x=>{x.classList.remove('ring-2','ring-blue-500','status-active');});
-    b.classList.add('ring-2','ring-blue-500','status-active');
-  });
-});
-
-function updateHomeStats(){
-  const ativas=obras.filter(o=>o.status==='em-andamento').length;
-  const receber=obras.filter(o=>(o.valorTotal||0)>0).reduce((s,o)=>{
-    const rec=pagamentos.filter(p=>p.obraId===o.id&&p.dataPago).reduce((a,p)=>a+p.valor,0);
-    return s+Math.max(0,(o.valorTotal||0)-rec);
-  },0);
-  const late=obras.filter(o=>o.status!=='paga'&&o.prazo&&isLate(o.prazo)).length;
-  const el=id=>document.getElementById(id);
-  el('stat-ativas')&&(el('stat-ativas').textContent=ativas);
-  el('stat-receber')&&(el('stat-receber').textContent=money(receber));
-  el('stat-atrasadas')&&(el('stat-atrasadas').textContent=late);
-  el('stat-clientes')&&(el('stat-clientes').textContent=clientes.length);
-}
-
-auth.getRedirectResult().catch(e=>{if(e.code&&e.code!=='auth/no-current-user')alert('Erro login: '+e.message);});
-
-const addObraBtn=document.getElementById('btn-add-obra');
-if(addObraBtn)addObraBtn.addEventListener('click',()=>openSheetObra(null));
-const addCliBtn=document.getElementById('btn-add-cliente');
-if(addCliBtn)addCliBtn.addEventListener('click',()=>openSheetCliente(null));
 
 </script>
 </body>
 </html>
-
-
