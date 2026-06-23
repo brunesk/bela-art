@@ -809,69 +809,87 @@ function emitirContrato(obraId) {
   if (!obra.prazo) falta.push('Prazo de entrega');
   if (falta.length) return alert('Preencha antes de gerar o contrato:\n- ' + falta.join('\n- '));
 
-  const hoje = new Date().toLocaleDateString('pt-BR', {day:'2-digit',month:'long',year:'numeric'});
-  const valorFmt = 'R$ ' + obra.valorTotal.toLocaleString('pt-BR',{minimumFractionDigits:2}) + ' (' + valorPorExtenso(obra.valorTotal) + ')';
+  // Calcular prazo em dias
+  const hoje = new Date(); hoje.setHours(0,0,0,0);
+  const prazoDate = new Date(obra.prazo + 'T00:00:00');
+  const diasNum = Math.max(1, Math.round((prazoDate - hoje) / (1000*60*60*24)));
+  const prazoExtenso = numeroPorExtenso(diasNum);
+  const cidadeData = 'Ibiuúna, ' + hoje.toLocaleDateString('pt-BR',{day:'2-digit',month:'long',year:'numeric'});
+
+  const valorTotal = obra.valorTotal.toLocaleString('pt-BR',{minimumFractionDigits:2});
+  const valorTotalExt = valorPorExtenso(obra.valorTotal);
   const servicoDesc = obra.servico || obra.descricao;
 
   const html = '<!DOCTYPE html><html lang="pt-BR"><head><meta charset="UTF-8"><title>Contrato - ' + obra.descricao + '</title>'
     + '<style>'
-    + 'body{font-family:"Times New Roman",serif;font-size:12pt;line-height:1.7;max-width:780px;margin:40px auto;padding:0 40px;color:#111}'
-    + 'h1{text-align:center;font-size:15pt;text-transform:uppercase;letter-spacing:1px;margin-bottom:4px}'
-    + '.sub{text-align:center;font-size:10pt;color:#555;margin-bottom:2px}'
-    + '.linha{border-top:1px solid #333;margin:18px 0}'
-    + 'h2{font-size:11pt;font-weight:bold;text-transform:uppercase;margin:18px 0 6px}'
-    + 'p{margin:5px 0;text-align:justify}'
-    + '.assin{display:flex;gap:60px;margin-top:70px;flex-wrap:wrap}'
-    + '.assin-bloco{flex:1;min-width:200px;text-align:center}'
-    + '.assin-linha{border-top:1px solid #333;padding-top:8px;margin-top:50px}'
-    + '.rodape{margin-top:50px;font-size:9pt;color:#777;text-align:center;border-top:1px solid #ccc;padding-top:10px}'
+    + 'body{font-family:Arial,sans-serif;font-size:12pt;margin:0;padding:0;color:#000}'
+    + '.page{width:21cm;min-height:29.7cm;margin:0 auto;padding:2.5cm 2.5cm 2cm 2.5cm;box-sizing:border-box}'
+    + 'h1{text-align:center;font-size:13pt;text-transform:uppercase;margin-bottom:20px}'
+    + 'p{text-align:justify;line-height:1.6;margin:8px 0}'
+    + '.clausula{font-weight:bold;margin-top:18px;margin-bottom:4px}'
+    + '.linha-assinatura{display:flex;justify-content:space-between;margin-top:50px}'
+    + '.assinante{text-align:center;width:45%;border-top:1px solid #000;padding-top:6px;font-size:11pt}'
+    + '.testemunhas{margin-top:40px}'
+    + '.teste-linha{display:flex;justify-content:space-between;margin-top:40px}'
+    + '.teste-bloco{width:45%;font-size:11pt}'
+    + '.teste-bloco p{margin:4px 0;border-bottom:1px solid #000;min-height:20px}'
     + '.btn-imp{position:fixed;top:20px;right:20px;padding:10px 22px;background:#1d4ed8;color:#fff;border:none;border-radius:8px;font-size:13px;cursor:pointer;font-weight:600;font-family:sans-serif}'
-    + '@media print{.btn-imp{display:none}body{margin:20px;padding:0 20px}}'
+    + '@media print{.btn-imp{display:none}body{margin:0}.page{margin:0;padding:0;width:100%}}'
     + '</style></head><body>'
     + '<button class="btn-imp" onclick="window.print()">Imprimir / Salvar PDF</button>'
-    + '<h1>Contrato de Prestacao de Servicos</h1>'
-    + '<p class="sub"><strong>Bela Art</strong> — Solucoes em Aluminio e Vidro</p>'
-    + '<div class="linha"></div>'
-    + '<h2>1. Das Partes</h2>'
-    + '<p><strong>CONTRATADA:</strong> Bela Art, prestadora de servicos de aluminio e vidro.</p>'
-    + '<p><strong>CONTRATANTE:</strong> ' + cliente.nome + ', portador do CPF/RG n.o ' + cliente.cpfrg + ', residente em ' + cliente.end + '.</p>'
-    + '<h2>2. Do Objeto</h2>'
-    + '<p>O presente contrato tem por objeto a prestacao dos seguintes servicos: <strong>' + servicoDesc + '</strong>.</p>'
-    + (obra.observacoes ? '<p>Observacoes: ' + obra.observacoes + '</p>' : '')
-    + '<h2>3. Do Valor e da Forma de Pagamento</h2>'
-    + '<p>O valor total pelos servicos e de <strong>' + valorFmt + '</strong>.</p>'
-    + '<p><strong>Forma de pagamento:</strong> ' + obra.formaPag + '.</p>'
-    + '<h2>4. Do Prazo</h2>'
-    + '<p>Os servicos serao executados e entregues ate o dia <strong>' + fmtDate(obra.prazo) + '</strong>, salvo casos de forca maior, atraso no fornecimento de materiais ou alteracoes solicitadas pelo Contratante.</p>'
-    + '<h2>5. Das Obrigacoes da Contratada</h2>'
-    + '<p>a) Executar os servicos conforme descrito neste contrato, com qualidade e no prazo acordado.</p>'
-    + '<p>b) Utilizar materiais adequados e mao de obra qualificada.</p>'
-    + '<p>c) Manter o Contratante informado sobre o andamento dos servicos.</p>'
-    + '<h2>6. Das Obrigacoes do Contratante</h2>'
-    + '<p>a) Efetuar o pagamento nas condicoes e prazos estipulados.</p>'
-    + '<p>b) Fornecer acesso ao local e as condicoes necessarias para a execucao dos servicos.</p>'
-    + '<p>c) Nao realizar modificacoes no objeto do contrato sem autorizacao previa da Contratada.</p>'
-    + '<h2>7. Da Garantia</h2>'
-    + '<p>Os servicos executados terao garantia de <strong>90 (noventa) dias</strong> contra defeitos de instalacao, a contar da data de entrega.</p>'
-    + '<h2>8. Da Rescisao</h2>'
-    + '<p>Este contrato podera ser rescindido por qualquer das partes mediante aviso previo de 5 (cinco) dias uteis. Em caso de rescisao por parte do Contratante apos o inicio dos servicos, serao devidos os valores proporcionais ao trabalho ja realizado.</p>'
-    + '<h2>9. Do Foro</h2>'
-    + '<p>As partes elegem o foro da comarca de sua localidade para dirimir quaisquer controversias decorrentes deste contrato, com renuncia expressa a qualquer outro, por mais privilegiado que seja.</p>'
-    + '<p style="margin-top:28px">Por estarem de acordo com todos os termos acima, as partes assinam o presente instrumento em duas vias de igual teor e forma.</p>'
-    + '<p style="text-align:right;margin-top:8px">' + hoje + '</p>'
-    + '<div class="assin">'
-    + '<div class="assin-bloco"><div class="assin-linha"><p><strong>Contratada</strong></p><p>Bela Art</p></div></div>'
-    + '<div class="assin-bloco"><div class="assin-linha"><p><strong>Contratante</strong></p><p>' + cliente.nome + '</p></div></div>'
+    + '<div class="page">'
+    + '<h1>Contrato Particular de Fornecimento e Instalação</h1>'
+    + '<p><strong>CONTRATANTE:</strong> ' + cliente.nome + ', inscrito(a) no CPF/RG ' + cliente.cpfrg + ', residente na ' + cliente.end + ', doravante denominado(a) <strong>"CONTRATANTE"</strong>.</p>'
+    + '<p><strong>CONTRATADA:</strong> Bela Art – Serralheria e Vidraçaria – BRUNO EDUARDO ANSALDI FERRACINI, inscrita no CNPJ/MF sob nº 40.606.564/0001-97, tendo como nome fantasia "Bela Art", com sede na Estrada Amaro Gabriel Vieira nº 12, Bairro Sorocabuçu, CEP: 18150-000, Ibiuúna – SP, neste ato representada por seu administrador, BRUNO EDUARDO ANSALDI FERRACINI, brasileiro, solteiro, empresário, portador do RG nº 52.224.773-8, inscrito no CPF/MF sob nº 475.415.298-00, domiciliado na Travessa Moraes, nº 165, Vila Lima, Ibiuúna – SP, doravante denominada <strong>"CONTRATADA"</strong>.</p>'
+    + '<p>As partes acima qualificadas celebram o presente CONTRATO, nos seguintes termos e condições:</p>'
+    + '<p class="clausula">CLÁUSULA PRIMEIRA – DO OBJETO E DAS DECLARAÇÕES COMPLEMENTARES</p>'
+    + '<p>1.1. O presente CONTRATO tem por objeto o fornecimento e a instalação de: <strong>' + servicoDesc + '</strong>.</p>'
+    + '<p>1.2. Está incluso o fornecimento de toda a mão de obra própria para a fabricação e instalação, todos os materiais e acessórios, visando a boa e regular realização da obra, assumindo e responsabilizando-se, por força deste instrumento, ao cumprimento deste CONTRATO.</p>'
+    + '<p>1.3. A CONTRATADA deverá prestar os serviços de acordo com as melhores técnicas profissionais e dentro dos mais elevados padrões de conduta ética, moral e profissional.</p>'
+    + '<p>1.4. A CONTRATADA é responsável pelo fornecimento de todas as ferramentas, máquinas e equipamentos necessários à execução dos serviços.</p>'
+    + '<p class="clausula">CLÁUSULA SEGUNDA – DOS PRAZOS</p>'
+    + '<p>2.1. A CONTRATADA deverá cumprir os prazos estabelecidos neste CONTRATO, que são de ' + diasNum + ' (' + prazoExtenso + ') dias corridos a partir da data de assinatura deste contrato.</p>'
+    + '<p class="clausula">CLÁUSULA TERCEIRA – PREÇO E FORMA DE PAGAMENTO</p>'
+    + '<p>3.1. O preço ajustado para o fornecimento e instalação ora contratados é de <strong>R$ ' + valorTotal + ' (' + valorTotalExt + ')</strong>.</p>'
+    + '<p>3.1.1. Forma de pagamento: <strong>' + obra.formaPag + '</strong>; por meio de PIX ou transferência bancária.</p>'
+    + '<p>3.2. O valor dos serviços é global e inclui todos os tributos, taxas, despesas e encargos relacionados aos serviços, incluindo equipamentos de proteção individual, alimentação e transporte, sendo o fornecimento de obrigação da CONTRATADA.</p>'
+    + '<p class="clausula">CLÁUSULA QUARTA – DA GARANTIA</p>'
+    + '<p>4.1. A CONTRATADA garante a qualidade dos seus produtos e serviços.</p>'
+    + '<p>4.2. A CONTRATADA garante o serviço de mão de obra e dos produtos fornecidos pelo prazo de 6 (seis) meses, contados do término da obra. O tempo de garantia dos materiais será de acordo com o tempo de garantia oferecido pelo fabricante dos mesmos.</p>'
+    + '<p>4.3. Os serviços ora contratados somente serão considerados concluídos e entregues desde que a CONTRATADA tenha cumprido com todas as suas obrigações aqui pactuadas e mediante termo de aceite da CONTRATANTE.</p>'
+    + '<div style="page-break-before:always;"></div>'
+    + '<p class="clausula">CLÁUSULA QUINTA – DO FORO</p>'
+    + '<p>5.1. As cláusulas omissas neste CONTRATO reger-se-ão pelas leis vigentes, ficando o foro da comarca de Ibiuúna eleito, com renúncia a qualquer outro, para resolver questões oriundas deste CONTRATO não solucionadas administrativamente.</p>'
+    + '<p>E por estarem justas e contratadas, firmam o presente em 2 (duas) vias de idêntica forma e igual conteúdo para um só efeito, na presença de 2 (duas) testemunhas e do gestor responsável.</p>'
+    + '<p style="margin-top:30px;text-align:center;">' + cidadeData + '</p>'
+    + '<div class="linha-assinatura">'
+    + '<div class="assinante">' + cliente.nome + '<br>CPF/RG: ' + cliente.cpfrg + '<br><strong>CONTRATANTE</strong></div>'
+    + '<div class="assinante">Bruno Eduardo Ansaldi Ferracini<br>CPF: 475.415.298-00<br><strong>CONTRATADA</strong></div>'
     + '</div>'
-    + '<p class="rodape">Contrato gerado pelo sistema Bela Art em ' + hoje + '</p>'
-    + '</body></html>';
+    + '<div class="testemunhas"><p><strong>TESTEMUNHAS:</strong></p>'
+    + '<div class="teste-linha">'
+    + '<div class="teste-bloco"><p>&nbsp;</p><p>NOME:</p><p>RG:</p><p>CPF:</p></div>'
+    + '<div class="teste-bloco"><p>&nbsp;</p><p>NOME: Giovani Ferracini</p><p>RG: 30.810.364-6</p><p>CPF: 260.775.648-00</p></div>'
+    + '</div></div>'
+    + '</div></body></html>';
 
   const w = window.open('', '_blank');
-  if (!w) { alert('Permita pop-ups para gerar o contrato. No celular, use o Chrome.'); return; }
+  if (!w) { alert('Permita pop-ups para gerar o contrato.'); return; }
   w.document.write(html);
   w.document.close();
+}
+
+function numeroPorExtenso(n) {
+  const u = ['','um','dois','tres','quatro','cinco','seis','sete','oito','nove','dez','onze','doze','treze','quatorze','quinze','dezesseis','dezessete','dezoito','dezenove'];
+  const d = ['','','vinte','trinta','quarenta','cinquenta','sessenta','setenta','oitenta','noventa'];
+  if (n <= 0) return 'zero';
+  if (n < 20) return u[n];
+  if (n < 100) return d[Math.floor(n/10)] + (n%10 ? ' e '+u[n%10] : '');
+  if (n < 1000) return (n===100?'cem':(Math.floor(n/100)===1?'cento':['','','duzentos','trezentos','quatrocentos','quinhentos','seiscentos','setecentos','oitocentos','novecentos'][Math.floor(n/100)])) + (n%100?' e '+numeroPorExtenso(n%100):'');
+  return n + '';
 }
 
 </script>
 </body>
 </html>
+
