@@ -319,6 +319,10 @@
     <button onclick="closeSheet()" class="flex-1 py-3 border border-slate-200 rounded-xl font-semibold text-slate-600">Cancelar</button>
     <button id="confirm-ok" class="flex-1 py-3 bg-red-600 rounded-xl font-semibold text-white">Excluir</button>
   </div>
+
+<div id="lightbox" class="hidden fixed inset-0 z-50 bg-black/85 flex items-center justify-center p-6" onclick="this.classList.add('hidden')">
+  <img id="lightbox-img" src="" alt="" class="max-w-full max-h-full rounded-2xl object-contain shadow-2xl">
+</div>
 </div>
 
 <script>
@@ -1012,7 +1016,7 @@ function calcularCorte() {
     grupo.perfis.forEach(function(p) {
       var m = p.medida % 1 === 0 ? p.medida : p.medida.toFixed(1);
       html += '<div class="flex items-center gap-3 px-4 py-3 border-b border-slate-50">';
-      html += '<img src="Perfis/' + p.codigo + '.png" alt="" class="w-14 h-10 object-contain flex-shrink-0 bg-slate-50 rounded-lg p-1" onerror="this.remove()">';
+      html += '<img src="Perfis/' + p.codigo + '.png" alt="" class="w-14 h-10 object-contain flex-shrink-0 bg-slate-50 rounded-lg p-1 cursor-pointer active:scale-95 transition-transform" onclick="abrirImgPerfil(this.src)" onerror="this.remove()">';
       html += '<div class="flex-1 min-w-0"><p class="text-xs font-bold text-blue-600">' + p.codigo + '</p><p class="text-sm text-slate-700 leading-tight">' + p.nome + '</p></div>';
       html += '<div class="text-right flex-shrink-0"><p class="text-xl font-black text-slate-800">' + m + '<span class="text-xs font-normal text-slate-400 ml-0.5">mm</span></p><p class="text-xs text-slate-400">' + p.qtd + ' ' + (p.qtd > 1 ? 'pecas' : 'peca') + '</p></div>';
       html += '</div>';
@@ -1032,6 +1036,11 @@ function calcularCorte() {
   el.classList.remove('hidden');
 }
 
+
+function abrirImgPerfil(src) {
+  document.getElementById('lightbox-img').src = src;
+  document.getElementById('lightbox').classList.remove('hidden');
+}
 
 </script>
 </body>
