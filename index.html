@@ -574,11 +574,10 @@ function renderCompras(){
 
 function openSheetObra(obraId){
   const o=obraId?obras.find(x=>x.id===obraId):null;
-  document.getElementById('form-obra-title').textContent=o?'Editar Obra':'Nova Obra';
+  document.getElementById('sheet-obra-title').textContent=o?'Editar Obra':'Nova Obra';
   document.getElementById('f-obra-id').value=o?.id||'';
   document.getElementById('f-obra-desc').value=o?.descricao||'';
-  document.getElementById('f-obra-end').value=o?.endereco||'';
-  document.getElementById('f-obra-val').value=o?.valorTotal||'';
+  document.getElementById('f-obra-valor').value=o?.valorTotal||'';
   document.getElementById('f-obra-prazo').value=o?.prazo||'';
   document.getElementById('f-obra-formapag').value=o?.formaPag||'';
   document.getElementById('f-obra-servico').value=o?.servico||'';
@@ -594,7 +593,7 @@ function openSheetObra(obraId){
 
 function openSheetCliente(cliId){
   const c=cliId?clientes.find(x=>x.id===cliId):null;
-  document.getElementById('form-cli-title').textContent=c?'Editar Cliente':'Novo Cliente';
+  document.getElementById('sheet-cliente-title').textContent=c?'Editar Cliente':'Novo Cliente';
   document.getElementById('f-cli-id').value=c?.id||'';
   document.getElementById('f-cli-nome').value=c?.nome||'';
   document.getElementById('f-cli-cpfrg').value=c?.cpfrg||'';
@@ -616,17 +615,16 @@ document.getElementById('form-obra').addEventListener('submit',async function(e)
   const id=document.getElementById('f-obra-id').value;
   const cliId=document.getElementById('f-obra-cliente').value;
   const cliRef=cliId?clientes.find(c=>c.id===cliId):null;
-  const stBtn=document.querySelector('#f-obra-status .status-active');
+  const stBtn=null; // status is a <select>
   const data={
     descricao:document.getElementById('f-obra-desc').value.trim(),
-    endereco:document.getElementById('f-obra-end').value.trim(),
-    valorTotal:parseFloat(document.getElementById('f-obra-val').value)||0,
+    valorTotal:parseFloat(document.getElementById('f-obra-valor').value)||0,
     prazo:document.getElementById('f-obra-prazo').value,
     formaPag:document.getElementById('f-obra-formapag').value.trim(),
     servico:document.getElementById('f-obra-servico').value.trim(),
     clienteId:cliId||null,
     clienteNome:cliRef?.nome||null,
-    status:stBtn?.dataset.val||'em-andamento',
+    status:document.getElementById('f-obra-status').value||'em-andamento',
     updatedAt:firebase.firestore.FieldValue.serverTimestamp()
   };
   if(!data.descricao)return alert('Informe o nome/descricao da obra');
@@ -829,3 +827,5 @@ if(addCliBtn)addCliBtn.addEventListener('click',()=>openSheetCliente(null));
 </script>
 </body>
 </html>
+
+
