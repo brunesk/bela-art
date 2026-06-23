@@ -5,120 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
   <title>Bela Art</title>
   <meta name="theme-color" content="#1e3a8a">
-  <script src="https://cdn.tailwindcss.com">
-const TIPOLOGIAS = {
-  'porta-3f-vidro': {
-    nome: 'Porta de Correr 3 Folhas Vidro',
-    img: 'Tipologias/Porta 3 folhas de Vidro - Suprema.png',
-    calcular: function(L, A) {
-      var su012 = A - 3;
-      var su011 = L - 3 - 26;
-      var su010 = L - 3 - 26;
-      var su008 = A - 3 - 30;
-      var mont = su012 - 50;
-      var su225 = Math.round((su011 - 130) / 3 * 10) / 10;
-      var su102L = Math.round((su225 - 3) * 10) / 10;
-      var su102A = mont - 200;
-      return {
-        grupos: [
-          { nome: 'Marco', perfis: [
-            { codigo: 'SU-010', nome: 'Trilho Superior 3 Folhas', medida: su010, qtd: 1 },
-            { codigo: 'SU-011', nome: 'Trilho Inferior 3 Folhas', medida: su011, qtd: 1 },
-            { codigo: 'SU-012', nome: 'Marco Lateral', medida: su012, qtd: 2 },
-            { codigo: 'SU-008', nome: 'Nariz', medida: su008, qtd: 2 }
-          ]},
-          { nome: 'Folha 1', perfis: [
-            { codigo: 'SU-039', nome: 'Montante Lateral Central', medida: mont, qtd: 1 },
-            { codigo: 'SU-040', nome: 'Mao de Amigo Interno', medida: mont, qtd: 1 },
-            { codigo: 'SU-225', nome: 'Travessa (largura)', medida: su225, qtd: 2 },
-            { codigo: 'SU-102', nome: 'Baguete largura', medida: su102L, qtd: 2 },
-            { codigo: 'SU-102', nome: 'Baguete altura', medida: su102A, qtd: 2 }
-          ]},
-          { nome: 'Folha 2', perfis: [
-            { codigo: 'SU-040', nome: 'Mao de Amigo Interno', medida: mont, qtd: 1 },
-            { codigo: 'SU-041', nome: 'Mao de Amigo Externo', medida: mont, qtd: 1 },
-            { codigo: 'SU-225', nome: 'Travessa (largura)', medida: su225, qtd: 2 },
-            { codigo: 'SU-102', nome: 'Baguete largura', medida: su102L, qtd: 2 },
-            { codigo: 'SU-102', nome: 'Baguete altura', medida: su102A, qtd: 2 }
-          ]},
-          { nome: 'Folha 3', perfis: [
-            { codigo: 'SU-041', nome: 'Mao de Amigo Externo', medida: mont, qtd: 1 },
-            { codigo: 'SU-039', nome: 'Montante Lateral Central', medida: mont, qtd: 1 },
-            { codigo: 'SU-225', nome: 'Travessa (largura)', medida: su225, qtd: 2 },
-            { codigo: 'SU-102', nome: 'Baguete largura', medida: su102L, qtd: 2 },
-            { codigo: 'SU-102', nome: 'Baguete altura', medida: su102A, qtd: 2 }
-          ]}
-        ],
-        acessorios: [
-          { nome: 'Roldanas', qtd: 6 },
-          { nome: 'Fecho concha', qtd: 1 },
-          { nome: 'Contrafecho', qtd: 2 },
-          { nome: 'Fechadura', qtd: 1 },
-          { nome: 'Puxadores', qtd: 4 },
-          { nome: 'Guias de plastico', qtd: 12 },
-          { nome: 'Parafusos montagem folha', qtd: 12 },
-          { nome: 'Parafusos marco', qtd: 8 },
-          { nome: 'Parafusos auto brocante nariz', qtd: 6 },
-          { nome: 'Escovinha 5x5', qtd: null }
-        ]
-      };
-    }
-  }
-};
-
-function onCorteSelect() {
-  var val = document.getElementById('corte-tipologia').value;
-  var imgBox = document.getElementById('corte-img-box');
-  var inputs = document.getElementById('corte-inputs');
-  var res = document.getElementById('corte-resultado');
-  if (val && TIPOLOGIAS[val]) {
-    document.getElementById('corte-tipologia-img').src = TIPOLOGIAS[val].img;
-    imgBox.classList.remove('hidden');
-    inputs.classList.remove('hidden');
-  } else {
-    imgBox.classList.add('hidden');
-    inputs.classList.add('hidden');
-  }
-  res.classList.add('hidden');
-  res.innerHTML = '';
-}
-
-function calcularCorte() {
-  var tipo = document.getElementById('corte-tipologia').value;
-  var L = parseFloat(document.getElementById('corte-larg').value);
-  var A = parseFloat(document.getElementById('corte-alt').value);
-  if (!tipo || !L || !A) { alert('Preencha a tipologia e as medidas do vao.'); return; }
-  var tip = TIPOLOGIAS[tipo];
-  var resultado = tip.calcular(L, A);
-  var el = document.getElementById('corte-resultado');
-  var html = '';
-  resultado.grupos.forEach(function(grupo) {
-    html += '<div class="bg-white rounded-2xl shadow-sm border border-slate-100 overflow-hidden">';
-    html += '<div class="bg-blue-50 px-4 py-2.5 border-b border-blue-100"><p class="font-bold text-blue-700 text-sm">' + grupo.nome + '</p></div>';
-    grupo.perfis.forEach(function(p) {
-      var m = p.medida % 1 === 0 ? p.medida : p.medida.toFixed(1);
-      html += '<div class="flex items-center gap-3 px-4 py-3 border-b border-slate-50">';
-      html += '<img src="Perfis/' + p.codigo + '.png" alt="" class="w-14 h-10 object-contain flex-shrink-0 bg-slate-50 rounded-lg p-1" onerror="this.classList.add('opacity-0')">';
-      html += '<div class="flex-1 min-w-0"><p class="text-xs font-bold text-blue-600">' + p.codigo + '</p><p class="text-sm text-slate-700 leading-tight">' + p.nome + '</p></div>';
-      html += '<div class="text-right flex-shrink-0"><p class="text-xl font-black text-slate-800">' + m + '<span class="text-xs font-normal text-slate-400 ml-0.5">mm</span></p><p class="text-xs text-slate-400">' + p.qtd + ' ' + (p.qtd > 1 ? 'pecas' : 'peca') + '</p></div>';
-      html += '</div>';
-    });
-    html += '</div>';
-  });
-  html += '<div class="bg-white rounded-2xl shadow-sm border border-slate-100 overflow-hidden">';
-  html += '<div class="bg-slate-50 px-4 py-2.5 border-b border-slate-200"><p class="font-bold text-slate-700 text-sm">Acessorios</p></div>';
-  resultado.acessorios.forEach(function(a) {
-    html += '<div class="flex items-center justify-between px-4 py-3 border-b border-slate-50">';
-    html += '<p class="text-sm text-slate-700">' + a.nome + '</p>';
-    html += '<p class="font-bold text-slate-800">' + (a.qtd !== null ? a.qtd + ' un' : '—') + '</p>';
-    html += '</div>';
-  });
-  html += '</div>';
-  el.innerHTML = html;
-  el.classList.remove('hidden');
-}
-
-</script>
+  <script src="https://cdn.tailwindcss.com"></script>
   <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-auth-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore-compat.js"></script>
@@ -1031,6 +918,120 @@ function numeroPorExtenso(n) {
   if (n < 1000) return (n===100?'cem':(Math.floor(n/100)===1?'cento':['','','duzentos','trezentos','quatrocentos','quinhentos','seiscentos','setecentos','oitocentos','novecentos'][Math.floor(n/100)])) + (n%100?' e '+numeroPorExtenso(n%100):'');
   return n + '';
 }
+
+
+const TIPOLOGIAS = {
+  'porta-3f-vidro': {
+    nome: 'Porta de Correr 3 Folhas Vidro',
+    img: 'Tipologias/Porta 3 folhas de Vidro - Suprema.png',
+    calcular: function(L, A) {
+      var su012 = A - 3;
+      var su011 = L - 3 - 26;
+      var su010 = L - 3 - 26;
+      var su008 = A - 3 - 30;
+      var mont = su012 - 50;
+      var su225 = Math.round((su011 - 130) / 3 * 10) / 10;
+      var su102L = Math.round((su225 - 3) * 10) / 10;
+      var su102A = mont - 200;
+      return {
+        grupos: [
+          { nome: 'Marco', perfis: [
+            { codigo: 'SU-010', nome: 'Trilho Superior 3 Folhas', medida: su010, qtd: 1 },
+            { codigo: 'SU-011', nome: 'Trilho Inferior 3 Folhas', medida: su011, qtd: 1 },
+            { codigo: 'SU-012', nome: 'Marco Lateral', medida: su012, qtd: 2 },
+            { codigo: 'SU-008', nome: 'Nariz', medida: su008, qtd: 2 }
+          ]},
+          { nome: 'Folha 1', perfis: [
+            { codigo: 'SU-039', nome: 'Montante Lateral Central', medida: mont, qtd: 1 },
+            { codigo: 'SU-040', nome: 'Mao de Amigo Interno', medida: mont, qtd: 1 },
+            { codigo: 'SU-225', nome: 'Travessa (largura)', medida: su225, qtd: 2 },
+            { codigo: 'SU-102', nome: 'Baguete largura', medida: su102L, qtd: 2 },
+            { codigo: 'SU-102', nome: 'Baguete altura', medida: su102A, qtd: 2 }
+          ]},
+          { nome: 'Folha 2', perfis: [
+            { codigo: 'SU-040', nome: 'Mao de Amigo Interno', medida: mont, qtd: 1 },
+            { codigo: 'SU-041', nome: 'Mao de Amigo Externo', medida: mont, qtd: 1 },
+            { codigo: 'SU-225', nome: 'Travessa (largura)', medida: su225, qtd: 2 },
+            { codigo: 'SU-102', nome: 'Baguete largura', medida: su102L, qtd: 2 },
+            { codigo: 'SU-102', nome: 'Baguete altura', medida: su102A, qtd: 2 }
+          ]},
+          { nome: 'Folha 3', perfis: [
+            { codigo: 'SU-041', nome: 'Mao de Amigo Externo', medida: mont, qtd: 1 },
+            { codigo: 'SU-039', nome: 'Montante Lateral Central', medida: mont, qtd: 1 },
+            { codigo: 'SU-225', nome: 'Travessa (largura)', medida: su225, qtd: 2 },
+            { codigo: 'SU-102', nome: 'Baguete largura', medida: su102L, qtd: 2 },
+            { codigo: 'SU-102', nome: 'Baguete altura', medida: su102A, qtd: 2 }
+          ]}
+        ],
+        acessorios: [
+          { nome: 'Roldanas', qtd: 6 },
+          { nome: 'Fecho concha', qtd: 1 },
+          { nome: 'Contrafecho', qtd: 2 },
+          { nome: 'Fechadura', qtd: 1 },
+          { nome: 'Puxadores', qtd: 4 },
+          { nome: 'Guias de plastico', qtd: 12 },
+          { nome: 'Parafusos montagem folha', qtd: 12 },
+          { nome: 'Parafusos marco', qtd: 8 },
+          { nome: 'Parafusos auto brocante nariz', qtd: 6 },
+          { nome: 'Escovinha 5x5', qtd: null }
+        ]
+      };
+    }
+  }
+};
+
+function onCorteSelect() {
+  var val = document.getElementById('corte-tipologia').value;
+  var imgBox = document.getElementById('corte-img-box');
+  var inputs = document.getElementById('corte-inputs');
+  var res = document.getElementById('corte-resultado');
+  if (val && TIPOLOGIAS[val]) {
+    document.getElementById('corte-tipologia-img').src = TIPOLOGIAS[val].img;
+    imgBox.classList.remove('hidden');
+    inputs.classList.remove('hidden');
+  } else {
+    imgBox.classList.add('hidden');
+    inputs.classList.add('hidden');
+  }
+  res.classList.add('hidden');
+  res.innerHTML = '';
+}
+
+function calcularCorte() {
+  var tipo = document.getElementById('corte-tipologia').value;
+  var L = parseFloat(document.getElementById('corte-larg').value);
+  var A = parseFloat(document.getElementById('corte-alt').value);
+  if (!tipo || !L || !A) { alert('Preencha a tipologia e as medidas do vao.'); return; }
+  var tip = TIPOLOGIAS[tipo];
+  var resultado = tip.calcular(L, A);
+  var el = document.getElementById('corte-resultado');
+  var html = '';
+  resultado.grupos.forEach(function(grupo) {
+    html += '<div class="bg-white rounded-2xl shadow-sm border border-slate-100 overflow-hidden">';
+    html += '<div class="bg-blue-50 px-4 py-2.5 border-b border-blue-100"><p class="font-bold text-blue-700 text-sm">' + grupo.nome + '</p></div>';
+    grupo.perfis.forEach(function(p) {
+      var m = p.medida % 1 === 0 ? p.medida : p.medida.toFixed(1);
+      html += '<div class="flex items-center gap-3 px-4 py-3 border-b border-slate-50">';
+      html += '<img src="Perfis/' + p.codigo + '.png" alt="" class="w-14 h-10 object-contain flex-shrink-0 bg-slate-50 rounded-lg p-1" onerror="this.classList.add('opacity-0')">';
+      html += '<div class="flex-1 min-w-0"><p class="text-xs font-bold text-blue-600">' + p.codigo + '</p><p class="text-sm text-slate-700 leading-tight">' + p.nome + '</p></div>';
+      html += '<div class="text-right flex-shrink-0"><p class="text-xl font-black text-slate-800">' + m + '<span class="text-xs font-normal text-slate-400 ml-0.5">mm</span></p><p class="text-xs text-slate-400">' + p.qtd + ' ' + (p.qtd > 1 ? 'pecas' : 'peca') + '</p></div>';
+      html += '</div>';
+    });
+    html += '</div>';
+  });
+  html += '<div class="bg-white rounded-2xl shadow-sm border border-slate-100 overflow-hidden">';
+  html += '<div class="bg-slate-50 px-4 py-2.5 border-b border-slate-200"><p class="font-bold text-slate-700 text-sm">Acessorios</p></div>';
+  resultado.acessorios.forEach(function(a) {
+    html += '<div class="flex items-center justify-between px-4 py-3 border-b border-slate-50">';
+    html += '<p class="text-sm text-slate-700">' + a.nome + '</p>';
+    html += '<p class="font-bold text-slate-800">' + (a.qtd !== null ? a.qtd + ' un' : '—') + '</p>';
+    html += '</div>';
+  });
+  html += '</div>';
+  el.innerHTML = html;
+  el.classList.remove('hidden');
+}
+
 
 </script>
 </body>
