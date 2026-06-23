@@ -860,9 +860,12 @@ firebase.auth().onAuthStateChanged(user=>{
   }
 });
 
+firebase.auth().getRedirectResult().catch(e=>alert('Erro login: '+e.message));
 document.getElementById('btn-google-login').addEventListener('click',()=>{
   const provider=new firebase.auth.GoogleAuthProvider();
-  firebase.auth().signInWithPopup(provider).catch(e=>alert('Erro login: '+e.message));
+  const isMobile=/Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
+  if(isMobile){firebase.auth().signInWithRedirect(provider);}
+  else{firebase.auth().signInWithPopup(provider).catch(e=>{if(e.code==='auth/popup-blocked')firebase.auth().signInWithRedirect(provider);else alert('Erro login: '+e.message);});}
 });
 
 // Backdrop close
@@ -884,3 +887,4 @@ backBtns.forEach(b=>b.addEventListener('click',()=>history.back()||goTo('obras')
 </script>
 </body>
 </html>
+
