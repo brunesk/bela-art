@@ -274,7 +274,9 @@ let obras=[],clientes=[],pagamentos=[],materiais=[];
 let obraFilter='todas',recFilter='pendente',detObraId=null;
 
 document.getElementById('btn-login').onclick=()=>{
-  auth.signInWithPopup(new firebase.auth.GoogleAuthProvider()).catch(e=>alert('Erro ao entrar: '+e.message));
+  const provider=new firebase.auth.GoogleAuthProvider();
+  const isMobile=/Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
+  if(isMobile){auth.signInWithRedirect(provider);}else{auth.signInWithPopup(provider).catch(e=>{if(e.code==='auth/popup-blocked')auth.signInWithRedirect(provider);else alert('Erro: '+e.message);});}  
 };
 auth.onAuthStateChanged(user=>{
   if(user){
@@ -803,37 +805,6 @@ document.querySelectorAll('#f-obra-status button').forEach(b=>{
   });
 });
 
-// Firestore listeners
-function col(name){return db.collection('users').doc('bela-art').collection(name);}
-
-function startListeners(){
-  col('obras').orderBy('createdAt','desc').onSnapshot(snap=>{
-    obras=snap.docs.map(d=>({id:d.id,...d.data()}));
-    renderObras();
-    if(currentObraId)renderObraDet(currentObraId);
-    renderReceber();
-    renderCompras();
-    updateHomeStats();
-  });
-  col('clientes').orderBy('nome').onSnapshot(snap=>{
-    clientes=snap.docs.map(d=>({id:d.id,...d.data()}));
-    renderClientes();
-    if(currentObraId)renderObraDet(currentObraId);
-    updateHomeStats();
-  });
-  col('pagamentos').orderBy('createdAt','desc').onSnapshot(snap=>{
-    pagamentos=snap.docs.map(d=>({id:d.id,...d.data()}));
-    if(currentObraId)renderObraDet(currentObraId);
-    renderReceber();
-    updateHomeStats();
-  });
-  col('materiais').orderBy('createdAt','desc').onSnapshot(snap=>{
-    materiais=snap.docs.map(d=>({id:d.id,...d.data()}));
-    if(currentObraId)renderObraDet(currentObraId);
-    renderCompras();
-  });
-}
-
 function updateHomeStats(){
   const ativas=obras.filter(o=>o.status==='em-andamento').length;
   const receber=obras.filter(o=>(o.valorTotal||0)>0).reduce((s,o)=>{
@@ -848,43 +819,13 @@ function updateHomeStats(){
   el('stat-clientes')&&(el('stat-clientes').textContent=clientes.length);
 }
 
-// Auth
-firebase.auth().onAuthStateChanged(user=>{
-  if(user){
-    document.getElementById('screen-login').classList.add('hidden');
-    document.getElementById('screen-app').classList.remove('hidden');
-    startListeners();
-  } else {
-    document.getElementById('screen-login').classList.remove('hidden');
-    document.getElementById('screen-app').classList.add('hidden');
-  }
-});
+auth.getRedirectResult().catch(e=>{if(e.code&&e.code!=='auth/no-current-user')alert('Erro login: '+e.message);});
 
-firebase.auth().getRedirectResult().catch(e=>alert('Erro login: '+e.message));
-document.getElementById('btn-google-login').addEventListener('click',()=>{
-  const provider=new firebase.auth.GoogleAuthProvider();
-  const isMobile=/Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
-  if(isMobile){firebase.auth().signInWithRedirect(provider);}
-  else{firebase.auth().signInWithPopup(provider).catch(e=>{if(e.code==='auth/popup-blocked')firebase.auth().signInWithRedirect(provider);else alert('Erro login: '+e.message);});}
-});
-
-// Backdrop close
-document.getElementById('backdrop').addEventListener('click',closeSheet);
-
-// Nav
-document.querySelectorAll('.nav-btn').forEach(b=>{
-  b.addEventListener('click',()=>goTo(b.dataset.page));
-});
-
-// FAB / header actions
 const addObraBtn=document.getElementById('btn-add-obra');
 if(addObraBtn)addObraBtn.addEventListener('click',()=>openSheetObra(null));
 const addCliBtn=document.getElementById('btn-add-cliente');
 if(addCliBtn)addCliBtn.addEventListener('click',()=>openSheetCliente(null));
-const backBtns=document.querySelectorAll('.btn-back');
-backBtns.forEach(b=>b.addEventListener('click',()=>history.back()||goTo('obras')));
 
 </script>
 </body>
 </html>
-
