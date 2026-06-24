@@ -344,19 +344,22 @@ const col = (path) => db.collection('users/' + uid + '/' + path);
 let obras = [], clientes = [], pagamentos = [], materiais = [];
 let obraFilter = 'todas', recFilter = 'pendente', detObraId = null, activePage = 'obras';
 
-// Login — popup no desktop, redirect no mobile
 document.getElementById('btn-login').onclick = () => {
+  const btn = document.getElementById('btn-login');
+  btn.disabled = true; btn.textContent = 'Aguarde...';
   const provider = new firebase.auth.GoogleAuthProvider();
-  if (/Android|iPhone|iPad|iPod/i.test(navigator.userAgent)) {
-    auth.signInWithRedirect(provider);
-  } else {
-    auth.signInWithPopup(provider).catch(e => {
-      if (e.code === 'auth/popup-blocked') auth.signInWithRedirect(provider);
-      else alert('Erro ao entrar: ' + e.message);
-    });
-  }
+  auth.signInWithPopup(provider).catch(e => {
+    if (e.code === 'auth/popup-blocked' || e.code === 'auth/popup-closed-by-user') {
+      auth.signInWithRedirect(provider);
+    } else if (e.code !== 'auth/cancelled-by-user') {
+      alert('Erro ao entrar: ' + e.message);
+      btn.disabled = false; btn.textContent = 'Entrar com Google';
+    }
+  });
 };
-auth.getRedirectResult().catch(() => {});
+auth.getRedirectResult().then(r => {
+  if (r && r.user) console.log('Redirect login OK');
+}).catch(() => {});
 
 auth.onAuthStateChanged(user => {
   if (user) {
