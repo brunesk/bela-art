@@ -51,22 +51,34 @@
   </header>
   <main class="flex-1 overflow-y-auto hs pb-4">
     <section id="page-obras" class="p-4">
-      <div class="flex gap-2 mb-4 overflow-x-auto hs pb-0.5">
-        <button class="f-btn active shrink-0 px-4 py-2 rounded-full text-sm font-medium bg-blue-600 text-white" data-f="todas">Todas</button>
-        <button class="f-btn shrink-0 px-4 py-2 rounded-full text-sm font-medium bg-white text-slate-600 border border-slate-200" data-f="em-andamento">Em andamento</button>
-        <button class="f-btn shrink-0 px-4 py-2 rounded-full text-sm font-medium bg-white text-slate-600 border border-slate-200" data-f="concluida">Concluida</button>
-        <button class="f-btn shrink-0 px-4 py-2 rounded-full text-sm font-medium bg-white text-slate-600 border border-slate-200" data-f="paga">Paga</button>
-      </div>
       <div id="list-obras" class="space-y-3"></div>
       <div id="empty-obras" class="hidden text-center py-16">
         <div class="w-16 h-16 bg-slate-200 rounded-2xl mx-auto mb-4 flex items-center justify-center">
           <svg class="w-8 h-8 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-2 10v-5a1 1 0 00-1-1h-2a1 1 0 00-1 1v5m4 0H9"/></svg>
         </div>
-        <p class="font-semibold text-slate-500">Nenhuma obra</p>
+        <p class="font-semibold text-slate-500">Nenhuma obra em andamento</p>
         <p class="text-sm text-slate-400 mt-1">Toque em + Nova para comecar</p>
       </div>
     </section>
     <section id="page-obra-det" class="hidden p-4"><div id="obra-det-content"></div></section>
+    <section id="page-concluidos" class="hidden p-4">
+      <div class="bg-gradient-to-br from-blue-700 to-blue-900 rounded-2xl p-5 mb-4 text-white shadow-lg">
+        <p class="text-blue-300 text-xs font-semibold uppercase tracking-wider mb-1">Faturado em <span id="concluidos-ano-label"></span></p>
+        <p id="total-concluidos-ano" class="text-4xl font-black">R$ 0,00</p>
+        <div class="flex gap-5 mt-4 pt-4 border-t border-blue-600/50">
+          <div><p class="text-blue-300 text-xs mb-0.5">Servicos</p><p id="count-concluidos" class="font-bold text-sm">0</p></div>
+          <div><p class="text-blue-300 text-xs mb-0.5">Total geral</p><p id="total-concluidos-geral" class="font-bold text-sm">R$ 0,00</p></div>
+        </div>
+      </div>
+      <div id="list-concluidos" class="space-y-3"></div>
+      <div id="empty-concluidos" class="hidden text-center py-16">
+        <div class="w-16 h-16 bg-slate-200 rounded-2xl mx-auto mb-4 flex items-center justify-center">
+          <svg class="w-8 h-8 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+        </div>
+        <p class="font-semibold text-slate-500">Nenhum servico concluido</p>
+        <p class="text-sm text-slate-400 mt-1">Marque uma obra como Concluida para ela aparecer aqui</p>
+      </div>
+    </section>
     <section id="page-clientes" class="hidden p-4">
       <div class="relative mb-4">
         <svg class="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0"/></svg>
@@ -141,6 +153,10 @@
       <button class="nav-btn flex-1 flex flex-col items-center py-3 gap-0.5 text-blue-600" data-page="obras">
         <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-2 10v-5a1 1 0 00-1-1h-2a1 1 0 00-1 1v5m4 0H9"/></svg>
         <span class="text-[11px] font-semibold">Obras</span>
+      </button>
+      <button class="nav-btn flex-1 flex flex-col items-center py-3 gap-0.5 text-slate-400" data-page="concluidos">
+        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+        <span class="text-[11px] font-semibold">Concluidos</span>
       </button>
       <button class="nav-btn flex-1 flex flex-col items-center py-3 gap-0.5 text-slate-400" data-page="clientes">
         <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
@@ -379,6 +395,7 @@ function startListeners() {
   col('obras').orderBy('ts', 'desc').onSnapshot(s => {
     obras = s.docs.map(d => ({ id: d.id, ...d.data() }));
     if (activePage === 'obras') renderObras();
+    if (activePage === 'concluidos') renderConcluidos();
     if (activePage === 'obra-det') renderObraDet(detObraId);
     if (activePage === 'receber') renderReceber();
   });
@@ -398,8 +415,8 @@ function startListeners() {
   });
 }
 
-const pages = ['obras','obra-det','clientes','receber','compras','corte'];
-const pageTitles = { obras:'Obras','obra-det':'',clientes:'Clientes',receber:'A Receber',compras:'Compras',corte:'Corte de Material' };
+const pages = ['obras','obra-det','concluidos','clientes','receber','compras','corte'];
+const pageTitles = { obras:'Obras','obra-det':'',concluidos:'Servicos Concluidos',clientes:'Clientes',receber:'A Receber',compras:'Compras',corte:'Corte de Material' };
 
 function goTo(page, obraId) {
   obraId = obraId || null;
@@ -408,13 +425,13 @@ function goTo(page, obraId) {
   document.getElementById('page-title').textContent = pageTitles[page] || '';
   const back = document.getElementById('btn-back'), add = document.getElementById('btn-add');
   back.classList.toggle('hidden', page !== 'obra-det');
-  add.classList.toggle('hidden', page === 'obra-det' || page === 'compras' || page === 'receber' || page === 'corte');
+  add.classList.toggle('hidden', page === 'obra-det' || page === 'compras' || page === 'receber' || page === 'corte' || page === 'concluidos');
   if (page !== 'obra-det' && page !== 'compras') { const lbl = {obras:'+ Nova',clientes:'+ Novo',receber:'+ Parcela'}; add.textContent = lbl[page] || '+ Novo'; }
   document.querySelectorAll('.nav-btn').forEach(b => {
     const act = b.dataset.page === page || (page === 'obra-det' && b.dataset.page === 'obras');
     b.classList.toggle('text-blue-600', act); b.classList.toggle('text-slate-400', !act);
   });
-  const renders = { obras: renderObras, clientes: renderClientes, receber: renderReceber, compras: renderCompras, 'obra-det': () => renderObraDet(obraId) };
+  const renders = { obras: renderObras, concluidos: renderConcluidos, clientes: renderClientes, receber: renderReceber, compras: renderCompras, 'obra-det': () => renderObraDet(obraId) };
   if (renders[page]) renders[page]();
 }
 
@@ -452,7 +469,7 @@ function closeSheet() {
 }
 
 function renderObras() {
-  const fil = obraFilter === 'todas' ? obras : obras.filter(o => o.status === obraFilter);
+  const fil = obras.filter(o => o.status === 'em-andamento');
   const list = document.getElementById('list-obras'), empty = document.getElementById('empty-obras');
   if (!fil.length) { list.innerHTML = ''; empty.classList.remove('hidden'); return; }
   empty.classList.add('hidden');
@@ -469,16 +486,6 @@ function renderObras() {
       + '</div>';
   }).join('');
 }
-
-document.querySelectorAll('.f-btn').forEach(b => b.addEventListener('click', () => {
-  obraFilter = b.dataset.f;
-  document.querySelectorAll('.f-btn').forEach(x => {
-    x.classList.toggle('bg-blue-600',x===b); x.classList.toggle('text-white',x===b);
-    x.classList.toggle('bg-white',x!==b); x.classList.toggle('text-slate-600',x!==b);
-    x.classList.toggle('border',x!==b); x.classList.toggle('border-slate-200',x!==b);
-  });
-  renderObras();
-}));
 
 function renderObraDet(obraId) {
   const obra = obras.find(o => o.id === obraId); if (!obra) return;
@@ -560,9 +567,48 @@ function openSheetStatus(obraId, cur) {
   if (!el) { el = document.createElement('div'); el.id = 'sheet-status-dyn'; document.body.appendChild(el); }
   el.className = 'fixed bottom-0 inset-x-0 z-40 bg-white rounded-t-3xl p-6 shadow-2xl slide-up';
   el.innerHTML = '<div class="w-10 h-1 bg-slate-200 rounded-full mx-auto mb-5"></div><h2 class="text-xl font-bold text-slate-800 mb-4">Mudar Status</h2><div class="space-y-3">'
-    + opts.map(o => '<button onclick="col(\'obras\').doc(\'' + obraId + '\').update({status:\'' + o.v + '\'}); closeSheet()" class="w-full flex items-center gap-3 p-4 rounded-2xl border-2 text-left ' + (o.v===cur?'border-blue-500 bg-blue-50':'border-slate-200') + '"><span class="' + o.cls + ' px-3 py-1 rounded-full text-sm font-semibold">' + o.l + '</span>' + (o.v===cur?'<span class="ml-auto text-blue-500 text-sm font-semibold">atual</span>':'') + '</button>').join('')
+    + opts.map(o => '<button onclick="setObraStatus(\'' + obraId + '\',\'' + o.v + '\')" class="w-full flex items-center gap-3 p-4 rounded-2xl border-2 text-left ' + (o.v===cur?'border-blue-500 bg-blue-50':'border-slate-200') + '"><span class="' + o.cls + ' px-3 py-1 rounded-full text-sm font-semibold">' + o.l + '</span>' + (o.v===cur?'<span class="ml-auto text-blue-500 text-sm font-semibold">atual</span>':'') + '</button>').join('')
     + '</div><button onclick="closeSheet()" class="w-full mt-4 py-3 border border-slate-200 rounded-xl font-semibold text-slate-600">Fechar</button>';
   show('backdrop'); el.classList.remove('hidden');
+}
+
+async function setObraStatus(obraId, status) {
+  const obra = obras.find(o => o.id === obraId);
+  const data = { status };
+  if (status === 'concluida') {
+    data.dataConclusao = todayStr();
+  } else if (status === 'paga') {
+    if (!obra || !obra.dataConclusao) data.dataConclusao = todayStr();
+  } else if (status === 'em-andamento') {
+    data.dataConclusao = null;
+  }
+  await col('obras').doc(obraId).update(data);
+  closeSheet();
+}
+
+function renderConcluidos() {
+  const concl = obras.filter(o => o.status === 'concluida' || o.status === 'paga');
+  const dataOf = o => o.dataConclusao || o.prazo || null;
+  const anoAtual = new Date().getFullYear();
+  document.getElementById('concluidos-ano-label').textContent = anoAtual;
+  const totalAno = concl.filter(o => { const d = dataOf(o); return d && parseInt(d.slice(0,4)) === anoAtual; }).reduce((s,o)=>s+(o.valorTotal||0),0);
+  const totalGeral = concl.reduce((s,o)=>s+(o.valorTotal||0),0);
+  document.getElementById('total-concluidos-ano').textContent = money(totalAno);
+  document.getElementById('total-concluidos-geral').textContent = money(totalGeral);
+  document.getElementById('count-concluidos').textContent = concl.length + ' ' + (concl.length===1?'servico':'servicos');
+  const ordenado = [...concl].sort((a,b) => (dataOf(b)||'') > (dataOf(a)||'') ? 1 : -1);
+  const list = document.getElementById('list-concluidos'), empty = document.getElementById('empty-concluidos');
+  if (!ordenado.length) { list.innerHTML = ''; empty.classList.remove('hidden'); return; }
+  empty.classList.add('hidden');
+  const borderCls = {'concluida':'border-l-blue-400','paga':'border-l-green-500'};
+  list.innerHTML = ordenado.map(o => {
+    const d = dataOf(o);
+    return '<div class="bg-white rounded-2xl p-4 shadow-sm border border-slate-100 border-l-4 ' + (borderCls[o.status]||'border-l-slate-300') + ' cursor-pointer active:scale-[0.98] transition-transform" onclick="goTo(\'obra-det\',\'' + o.id + '\')">'
+      + '<div class="flex items-start justify-between mb-2.5"><div class="flex-1 min-w-0 mr-3"><p class="font-bold text-slate-800 leading-tight">' + (o.clienteNome||'Sem cliente') + '</p><p class="text-sm text-slate-500 mt-0.5">' + o.descricao + '</p></div>' + badge(o.status) + '</div>'
+      + '<div class="flex justify-between items-end"><div><p class="text-xs text-slate-400 mb-0.5">Valor</p><p class="font-bold text-slate-800">' + money(o.valorTotal) + '</p></div>'
+      + (d ? '<p class="text-xs text-slate-400">Concluida em ' + fmtDate(d) + '</p>' : '') + '</div>'
+      + '</div>';
+  }).join('');
 }
 
 function renderClientes(q) {
