@@ -62,12 +62,36 @@
     </section>
     <section id="page-obra-det" class="hidden p-4"><div id="obra-det-content"></div></section>
     <section id="page-concluidos" class="hidden p-4">
-      <div class="bg-gradient-to-br from-blue-700 to-blue-900 rounded-2xl p-5 mb-4 text-white shadow-lg">
-        <p class="text-blue-300 text-xs font-semibold uppercase tracking-wider mb-1">Faturado em <span id="concluidos-ano-label"></span></p>
-        <p id="total-concluidos-ano" class="text-4xl font-black">R$ 0,00</p>
-        <div class="flex gap-5 mt-4 pt-4 border-t border-blue-600/50">
-          <div><p class="text-blue-300 text-xs mb-0.5">Servicos</p><p id="count-concluidos" class="font-bold text-sm">0</p></div>
-          <div><p class="text-blue-300 text-xs mb-0.5">Total geral</p><p id="total-concluidos-geral" class="font-bold text-sm">R$ 0,00</p></div>
+      <div id="concluidos-alerta" class="hidden bg-amber-50 border border-amber-200 rounded-2xl p-4 mb-4">
+        <p class="text-sm font-bold text-amber-800 mb-2">Pagas mas nao marcadas como concluidas</p>
+        <p class="text-xs text-amber-700 mb-3">Essas obras ja foram totalmente recebidas mas ainda estao "Em andamento" — por isso nao entram no total. Toque para abrir e mudar o status.</p>
+        <div id="concluidos-alerta-list" class="space-y-2"></div>
+      </div>
+      <div class="flex gap-2 mb-4">
+        <button class="cf-btn active shrink-0 px-4 py-2 rounded-full text-sm font-medium bg-blue-600 text-white" data-cf="geral">Visao geral</button>
+        <button class="cf-btn shrink-0 px-4 py-2 rounded-full text-sm font-medium bg-white text-slate-600 border border-slate-200" data-cf="mensal">Mensal</button>
+      </div>
+      <div id="concluidos-geral-box">
+        <div class="bg-gradient-to-br from-blue-700 to-blue-900 rounded-2xl p-5 mb-4 text-white shadow-lg">
+          <p class="text-blue-300 text-xs font-semibold uppercase tracking-wider mb-1">Total geral faturado</p>
+          <p id="total-concluidos-geral" class="text-4xl font-black">R$ 0,00</p>
+          <div class="flex gap-5 mt-4 pt-4 border-t border-blue-600/50">
+            <div><p class="text-blue-300 text-xs mb-0.5">Servicos</p><p id="count-concluidos" class="font-bold text-sm">0</p></div>
+            <div><p class="text-blue-300 text-xs mb-0.5">Este ano</p><p id="total-concluidos-ano" class="font-bold text-sm">R$ 0,00</p></div>
+          </div>
+        </div>
+        <div id="concluidos-por-ano" class="space-y-2 mb-4"></div>
+      </div>
+      <div id="concluidos-mensal-box" class="hidden">
+        <div class="flex items-center gap-2 mb-4">
+          <input id="concluidos-mes-input" type="month" class="flex-1 border border-slate-200 rounded-xl px-4 py-3 text-sm bg-white focus:outline-none focus:ring-2 focus:ring-blue-500">
+        </div>
+        <div class="bg-gradient-to-br from-blue-700 to-blue-900 rounded-2xl p-5 mb-4 text-white shadow-lg">
+          <p class="text-blue-300 text-xs font-semibold uppercase tracking-wider mb-1">Faturado no mes</p>
+          <p id="total-concluidos-mes" class="text-4xl font-black">R$ 0,00</p>
+          <div class="flex gap-5 mt-4 pt-4 border-t border-blue-600/50">
+            <div><p class="text-blue-300 text-xs mb-0.5">Servicos</p><p id="count-concluidos-mes" class="font-bold text-sm">0</p></div>
+          </div>
         </div>
       </div>
       <div id="list-concluidos" class="space-y-3"></div>
@@ -359,6 +383,7 @@ let uid = null;
 const col = (path) => db.collection('users/' + uid + '/' + path);
 let obras = [], clientes = [], pagamentos = [], materiais = [];
 let obraFilter = 'todas', recFilter = 'pendente', detObraId = null, activePage = 'obras';
+let concluidosView = 'geral', concluidosMes = new Date().toISOString().slice(0,7);
 
 document.getElementById('btn-login').onclick = () => {
   const btn = document.getElementById('btn-login');
@@ -406,6 +431,7 @@ function startListeners() {
   col('pagamentos').orderBy('ts', 'desc').onSnapshot(s => {
     pagamentos = s.docs.map(d => ({ id: d.id, ...d.data() }));
     if (activePage === 'receber') renderReceber();
+    if (activePage === 'concluidos') renderConcluidos();
     if (activePage === 'obra-det') renderObraDet(detObraId);
   });
   col('materiais').orderBy('ts', 'desc').onSnapshot(s => {
@@ -586,23 +612,68 @@ async function setObraStatus(obraId, status) {
   closeSheet();
 }
 
+function concluidoDataOf(o) { return o.dataConclusao || o.prazo || null; }
+
+function renderConcluidosAlerta() {
+  const pagasNaoConcluidas = obras.filter(o => {
+    if (o.status !== 'em-andamento' || !(o.valorTotal > 0)) return false;
+    const recebido = pagamentos.filter(p => p.obraId === o.id && p.dataPago).reduce((s,p) => s + p.valor, 0);
+    return recebido >= o.valorTotal - 0.01;
+  });
+  const box = document.getElementById('concluidos-alerta'), list = document.getElementById('concluidos-alerta-list');
+  if (!pagasNaoConcluidas.length) { box.classList.add('hidden'); list.innerHTML = ''; return; }
+  box.classList.remove('hidden');
+  list.innerHTML = pagasNaoConcluidas.map(o =>
+    '<div class="bg-white rounded-xl px-4 py-3 flex items-center justify-between cursor-pointer active:scale-[0.98] transition-transform" onclick="goTo(\'obra-det\',\'' + o.id + '\')">'
+    + '<div class="min-w-0 mr-3"><p class="font-semibold text-slate-700 text-sm truncate">' + (o.clienteNome||'Sem cliente') + ' — ' + o.descricao + '</p></div>'
+    + '<p class="font-bold text-slate-800 text-sm flex-shrink-0">' + money(o.valorTotal) + '</p>'
+    + '</div>'
+  ).join('');
+}
+
 function renderConcluidos() {
+  renderConcluidosAlerta();
   const concl = obras.filter(o => o.status === 'concluida' || o.status === 'paga');
-  const dataOf = o => o.dataConclusao || o.prazo || null;
-  const anoAtual = new Date().getFullYear();
-  document.getElementById('concluidos-ano-label').textContent = anoAtual;
-  const totalAno = concl.filter(o => { const d = dataOf(o); return d && parseInt(d.slice(0,4)) === anoAtual; }).reduce((s,o)=>s+(o.valorTotal||0),0);
-  const totalGeral = concl.reduce((s,o)=>s+(o.valorTotal||0),0);
-  document.getElementById('total-concluidos-ano').textContent = money(totalAno);
-  document.getElementById('total-concluidos-geral').textContent = money(totalGeral);
-  document.getElementById('count-concluidos').textContent = concl.length + ' ' + (concl.length===1?'servico':'servicos');
-  const ordenado = [...concl].sort((a,b) => (dataOf(b)||'') > (dataOf(a)||'') ? 1 : -1);
+  const borderCls = {'concluida':'border-l-blue-400','paga':'border-l-green-500'};
+  document.getElementById('concluidos-geral-box').classList.toggle('hidden', concluidosView !== 'geral');
+  document.getElementById('concluidos-mensal-box').classList.toggle('hidden', concluidosView !== 'mensal');
+
+  let listagem;
+  if (concluidosView === 'mensal') {
+    const mesInput = document.getElementById('concluidos-mes-input');
+    if (!mesInput.value) mesInput.value = concluidosMes;
+    const mes = mesInput.value || concluidosMes;
+    listagem = concl.filter(o => { const d = concluidoDataOf(o); return d && d.slice(0,7) === mes; });
+    const totalMes = listagem.reduce((s,o)=>s+(o.valorTotal||0),0);
+    document.getElementById('total-concluidos-mes').textContent = money(totalMes);
+    document.getElementById('count-concluidos-mes').textContent = listagem.length + ' ' + (listagem.length===1?'servico':'servicos');
+  } else {
+    const anoAtual = new Date().getFullYear();
+    const totalGeral = concl.reduce((s,o)=>s+(o.valorTotal||0),0);
+    const totalAno = concl.filter(o => { const d = concluidoDataOf(o); return d && parseInt(d.slice(0,4)) === anoAtual; }).reduce((s,o)=>s+(o.valorTotal||0),0);
+    document.getElementById('total-concluidos-geral').textContent = money(totalGeral);
+    document.getElementById('total-concluidos-ano').textContent = money(totalAno);
+    document.getElementById('count-concluidos').textContent = concl.length + ' ' + (concl.length===1?'servico':'servicos');
+
+    const porAno = {};
+    concl.forEach(o => { const d = concluidoDataOf(o); const ano = d ? d.slice(0,4) : 'Sem data'; (porAno[ano] = porAno[ano] || []).push(o); });
+    const anos = Object.keys(porAno).sort((a,b) => b.localeCompare(a));
+    document.getElementById('concluidos-por-ano').innerHTML = anos.map(ano => {
+      const total = porAno[ano].reduce((s,o)=>s+(o.valorTotal||0),0);
+      return '<div class="bg-white rounded-xl px-4 py-3 flex items-center justify-between border border-slate-100">'
+        + '<p class="text-sm font-semibold text-slate-600">' + ano + '</p>'
+        + '<p class="font-bold text-slate-800">' + money(total) + ' <span class="text-xs font-normal text-slate-400">(' + porAno[ano].length + ')</span></p>'
+        + '</div>';
+    }).join('');
+    listagem = concl;
+  }
+
+  const ordenado = [...listagem].sort((a,b) => (concluidoDataOf(b)||'') > (concluidoDataOf(a)||'') ? 1 : -1);
   const list = document.getElementById('list-concluidos'), empty = document.getElementById('empty-concluidos');
   if (!ordenado.length) { list.innerHTML = ''; empty.classList.remove('hidden'); return; }
   empty.classList.add('hidden');
-  const borderCls = {'concluida':'border-l-blue-400','paga':'border-l-green-500'};
   list.innerHTML = ordenado.map(o => {
-    const d = dataOf(o);
+    const d = concluidoDataOf(o);
     return '<div class="bg-white rounded-2xl p-4 shadow-sm border border-slate-100 border-l-4 ' + (borderCls[o.status]||'border-l-slate-300') + ' cursor-pointer active:scale-[0.98] transition-transform" onclick="goTo(\'obra-det\',\'' + o.id + '\')">'
       + '<div class="flex items-start justify-between mb-2.5"><div class="flex-1 min-w-0 mr-3"><p class="font-bold text-slate-800 leading-tight">' + (o.clienteNome||'Sem cliente') + '</p><p class="text-sm text-slate-500 mt-0.5">' + o.descricao + '</p></div>' + badge(o.status) + '</div>'
       + '<div class="flex justify-between items-end"><div><p class="text-xs text-slate-400 mb-0.5">Valor</p><p class="font-bold text-slate-800">' + money(o.valorTotal) + '</p></div>'
@@ -610,6 +681,20 @@ function renderConcluidos() {
       + '</div>';
   }).join('');
 }
+
+document.querySelectorAll('.cf-btn').forEach(b => b.addEventListener('click', () => {
+  concluidosView = b.dataset.cf;
+  document.querySelectorAll('.cf-btn').forEach(x => {
+    x.classList.toggle('bg-blue-600',x===b); x.classList.toggle('text-white',x===b);
+    x.classList.toggle('bg-white',x!==b); x.classList.toggle('text-slate-600',x!==b);
+    x.classList.toggle('border',x!==b); x.classList.toggle('border-slate-200',x!==b);
+  });
+  renderConcluidos();
+}));
+document.getElementById('concluidos-mes-input').addEventListener('input', e => {
+  concluidosMes = e.target.value;
+  renderConcluidos();
+});
 
 function renderClientes(q) {
   q = q || '';
